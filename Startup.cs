@@ -28,9 +28,8 @@ namespace my_new_app
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            services.AddDbContext<BloggingContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase"))
-            );
+
+            services.AddDbContext<UserDataContext>(options => options.UseSqlite("Data Source=blog.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

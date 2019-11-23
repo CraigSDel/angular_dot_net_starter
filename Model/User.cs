@@ -12,9 +12,4 @@ namespace my_new_app
         public string firstName { get; set; }
         public string lastName { get; set; }
     }
-
-    public class UserDBContext : DbContext
-    {
-        public DbSet<User> Users { get; set; }
-    }
 }

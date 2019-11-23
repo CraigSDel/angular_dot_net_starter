@@ -12,9 +12,4 @@ namespace my_new_app.Model
         public string name { get; set; }
         public UserTask[] userTasks { get; set; }
     }
-
-    public class TaskGroupDBContext : DbContext
-    {
-        public DbSet<TaskGroup> TaskGroups { get; set; }
-    }
 }

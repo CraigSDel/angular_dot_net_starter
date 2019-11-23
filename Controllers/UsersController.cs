@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace my_new_app.Controllers
@@ -11,6 +12,8 @@ namespace my_new_app.Controllers
     [Route("[controller]")]
     public class UsersController : Controller
     {
+        private readonly IConfiguration configuration;
+
         private static readonly string[] Summaries = new[]
         {
             "Angela", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
@@ -18,9 +21,10 @@ namespace my_new_app.Controllers
 
         private readonly ILogger<UsersController> _logger;
 
-        public UsersController(ILogger<UsersController> logger)
+        public UsersController(ILogger<UsersController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            this.configuration = configuration;
         }
 
         [HttpGet]

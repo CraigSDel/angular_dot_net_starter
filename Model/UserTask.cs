@@ -14,9 +14,4 @@ namespace my_new_app.Model
         public User user { get; set; }
         public string status { get; set; }
     }
-
-    public class UserTaskDBContext : DbContext
-    {
-        public DbSet<UserTask> UserTask { get; set; }
-    }
 }
