@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using my_new_app.Model;
 
 namespace my_new_app
 {
@@ -26,6 +28,9 @@ namespace my_new_app
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddDbContext<BloggingContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
