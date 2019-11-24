@@ -39,5 +39,11 @@ namespace my_new_app.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost]
+        public User Save()
+        {
+            return new User();
+        }
     }
 }

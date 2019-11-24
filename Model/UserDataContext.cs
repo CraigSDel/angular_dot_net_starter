@@ -15,7 +15,9 @@ namespace my_new_app.Model
         { }
 
         public DbSet<User> Users { get; set; }
+
         public DbSet<UserTask> UserTasks { get; set; }
+
         public DbSet<TaskGroup> TaskGroups { get; set; }
     }
 }
