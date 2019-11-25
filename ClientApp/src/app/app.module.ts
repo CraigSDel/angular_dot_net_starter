@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CounterComponent } from './counter/counter.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { UsersComponent } from './users/users.component';
+import { TaskGroupComponent } from './task-group/task-group.component';
 
 
 @NgModule({
@@ -15,8 +15,8 @@ import { UsersComponent } from './users/users.component';
         AppComponent,
         NavMenuComponent,
         HomeComponent,
-        CounterComponent,
-        UsersComponent
+        UsersComponent,
+        TaskGroupComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -24,8 +24,8 @@ import { UsersComponent } from './users/users.component';
         FormsModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent, pathMatch: 'full' },
-            { path: 'counter', component: CounterComponent },
             { path: 'users', component: UsersComponent },
+            { path: 'task-group', component: TaskGroupComponent }
         ])
     ],
     providers: [],

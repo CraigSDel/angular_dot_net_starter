@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "my-new-app", "my-new-app.csproj", "{76987C78-E95C-48EF-A41A-E7C6F3EE9A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "user-task-management", "user-task-management.csproj", "{76987C78-E95C-48EF-A41A-E7C6F3EE9A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
