@@ -1,22 +1,25 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../../shared/models/user';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
-  selector: 'users',
-  templateUrl: './users.component.html'
+  selector: 'user',
+  templateUrl: './user.component.html'
 })
-export class UsersComponent {
-    public users: User[];
+export class UserComponent implements OnInit {
+   public users: User[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-      http.get<User[]>(baseUrl + 'users').subscribe(result => {
-          this.users = result;
-    }, error => console.error(error));
-  }
-}
+    constructor(private userService: UserService, @Inject('BASE_URL') private baseUrl: string) {
+        
+    }
+    ngOnInit() {
+        this.getUsers();
+    }
 
-interface User {
-  id: number;
-  firstName: number;
-  lastName: number;
+    getUsers():void {
+        this.userService.getUsers(this.baseUrl).subscribe(result => {
+            this.users = result;
+        }, error => console.error(error));
+    }
 }

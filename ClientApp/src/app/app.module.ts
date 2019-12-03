@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { UsersComponent } from './users/users.component';
+import { UserComponent } from './user/user.component';
 import { TaskGroupComponent } from './task-group/task-group.component';
 
 
@@ -15,7 +15,7 @@ import { TaskGroupComponent } from './task-group/task-group.component';
         AppComponent,
         NavMenuComponent,
         HomeComponent,
-        UsersComponent,
+        UserComponent,
         TaskGroupComponent
     ],
     imports: [
@@ -24,7 +24,7 @@ import { TaskGroupComponent } from './task-group/task-group.component';
         FormsModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent, pathMatch: 'full' },
-            { path: 'users', component: UsersComponent },
+            { path: 'user', component: UserComponent },
             { path: 'task-group', component: TaskGroupComponent }
         ])
     ],

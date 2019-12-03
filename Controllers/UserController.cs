@@ -11,7 +11,7 @@ namespace my_new_app.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         private readonly IConfiguration configuration;
 
@@ -23,14 +23,14 @@ namespace my_new_app.Controllers
             "Angela", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
         };
 
-        public UsersController(ILogger<UsersController> logger, IConfiguration configuration, UserDataContext context)
+        public UserController(ILogger<UserController> logger, IConfiguration configuration, UserDataContext context)
         {
             _logger = logger;
             this.configuration = configuration;
             this.context = context;
         }
 
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<UserController> _logger;
 
         [HttpGet]
         public IEnumerable<User> Get()

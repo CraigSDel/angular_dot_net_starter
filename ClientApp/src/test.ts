@@ -22,5 +22,4 @@ context.keys().map(context);
 interface TaskGroup {
     id: number;
     name: number;
-    userTasks: UserTasks[];
 }

@@ -23,14 +23,14 @@ namespace my_new_app.Controllers
             "Angela", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
         };
 
-        public TaskGroupController(ILogger<UsersController> logger, IConfiguration configuration, UserDataContext context)
+        public TaskGroupController(ILogger<UserController> logger, IConfiguration configuration, UserDataContext context)
         {
             _logger = logger;
             this.configuration = configuration;
             this.context = context;
         }
 
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<UserController> _logger;
 
         [HttpGet]
         public IEnumerable<User> Get()
