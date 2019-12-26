@@ -45,10 +45,11 @@ namespace my_new_app.Controllers
             .ToArray();
         }
 
+
         [HttpPost]
         public void Save([FromBody] User user)
         {
-            context.Users.Add(new User());
+            context.Users.Add(user);
             context.SaveChanges();
         }
     }

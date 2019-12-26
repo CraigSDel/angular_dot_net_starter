@@ -23,32 +23,31 @@ namespace my_new_app.Controllers
             "Angela", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
         };
 
-        public TaskGroupController(ILogger<UserController> logger, IConfiguration configuration, UserDataContext context)
+        public TaskGroupController(ILogger<TaskGroupController> logger, IConfiguration configuration, UserDataContext context)
         {
             _logger = logger;
             this.configuration = configuration;
             this.context = context;
         }
 
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<TaskGroupController> _logger;
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable<TaskGroup> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new User
+            return Enumerable.Range(1, 5).Select(index => new TaskGroup
             {
                 id = rng.Next(-20, 55),
-                firstName = Summaries[rng.Next(Summaries.Length)],
-                lastName = Summaries[rng.Next(Summaries.Length)]
+                name = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
         }
 
         [HttpPost]
-        public void Save([FromBody] User user)
+        public void Save([FromBody] TaskGroup taskGroup)
         {
-            context.Users.Add(new User());
+            context.TaskGroups.Add(new TaskGroup());
             context.SaveChanges();
         }
     }

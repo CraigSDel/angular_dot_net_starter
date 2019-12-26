@@ -20,3 +20,19 @@
     </tr>
   </tbody>
 </table>
+
+<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
+  <div>
+    <label for="firstName">
+      Firstname
+    </label>
+    <input id="firstName" type="text" formControlName="firstName">
+  </div>
+  <div>
+    <label for="lastName">
+      Lastname
+    </label>
+    <input id="lastName" type="text" formControlName="lastName">
+  </div>
+  <button class="button" type="submit">Save</button>
+</form>

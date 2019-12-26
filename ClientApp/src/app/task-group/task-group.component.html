@@ -1,1 +1,20 @@
-<div style="border: 1px solid red">task-group Component</div>
+<h1 id="tableLabel">Task Groups</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!taskGroups"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="taskGroups">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let taskGroup of taskGroups">
+      <td>{{ taskGroup.id }}</td>
+      <td>{{ taskGroup.name }}</td>
+    </tr>
+  </tbody>
+</table>
