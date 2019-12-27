@@ -1,44 +1,56 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TaskGroup } from '../../shared/models/task-group';
 import { TaskGroupService } from '../../shared/services/task-group.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { User } from '../../shared/models/user';
+import { UserTaskService } from '../../shared/services/user-task.service';
+import { UserTask } from '../../shared/models/user-task';
 
 @Component({
-    selector: 'app-task-group',
-    templateUrl: './task-group.component.html'
+  selector: 'app-task-group',
+  templateUrl: './task-group.component.html'
 })
 export class TaskGroupComponent {
   public taskGroups: TaskGroup[];
-  userForm;
+  private userTasks: UserTask[];
+  taskGroupForm;
 
-  constructor(private taskGroupService: TaskGroupService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
-    this.userForm = this.formBuilder.group({
-      firstName: '',
-      lastName: ''
+  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
+    this.getTaskGroups();
+    this.getUserTasks();
+    this.taskGroupForm = this.formBuilder.group({
+      name: '',
+      userTasks: new FormControl(this.userTasks)
     });
   }
-  ngOnInit() {
-    this.getTaskGroups();
+
+  getUserTasks() {
+    this.userTaskService.getUserTasks(this.baseUrl).subscribe(result => {
+      this.userTasks = result;
+    }, error => {
+      console.error(error)
+    });
   }
 
   getTaskGroups(): void {
     this.taskGroupService.getTaskGroupService(this.baseUrl).subscribe(result => {
       this.taskGroups = result;
-    }, error => console.error(error));
+    }, error => {
+      console.error(error)
+    });
   }
 
-  onSubmit(userData) {
-    const user = new TaskGroup;
-    user.name = userData.firstName;
-    user.userTasks = userData.lastName;
-    this.taskGroupService.save(user).subscribe(data => {
+  onSubmit(taskGroupData) {
+    const taskGroup = new TaskGroup;
+    taskGroup.name = taskGroupData.name;
+    taskGroup.userTasks = taskGroupData.userTasks;
+    this.taskGroupService.save(taskGroup).subscribe(data => {
       console.log('Saved User ' + data);
-      this.userForm.reset();
+      this.taskGroupForm.reset();
     },
       error => {
         console.log(error);
-        this.userForm.reset();
+        this.taskGroupForm.reset();
       }
     );
   }

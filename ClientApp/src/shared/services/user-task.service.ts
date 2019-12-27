@@ -11,8 +11,8 @@ export class UserTaskService {
 
   constructor(private http: HttpClient) {}
 
-  public getUsers(baseUrl: string): Observable<UserTask[]>{
-    return this.http.get<UserTask[]>(baseUrl + 'user');
+  public getUserTasks(baseUrl: string): Observable<UserTask[]>{
+    return this.http.get<UserTask[]>(baseUrl + 'userTask');
   }
 
   public save(user: UserTask): Observable<UserTask> {

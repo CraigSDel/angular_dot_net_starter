@@ -19,18 +19,22 @@
   </tbody>
 </table>
 
-<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
+<form [formGroup]="taskGroupForm" (ngSubmit)="onSubmit(taskGroupForm.value)">
   <div>
-    <label for="firstName">
-      Firstname
+    <label for="name">
+      Name
     </label>
-    <input id="firstName" type="text" formControlName="firstName">
+    <input id="name" type="text" formControlName="name">
   </div>
   <div>
-    <label for="lastName">
-      Lastname
+    <label for="userTask">
+      User Task
     </label>
-    <input id="lastName" type="text" formControlName="lastName">
+    <select multiple formControlName="userTasks">
+      <option *ngFor="let userTask of userTasks" [ngValue]="userTask">
+        {{ userTask.name }}
+      </option>
+    </select>
   </div>
   <button class="button" type="submit">Save</button>
 </form>

@@ -10,7 +10,9 @@ namespace my_new_app.Controllers
     [ApiController]
     [Route("[controller]")]
     public class UserTaskController : Controller
-    {
+    { 
+        readonly UserDataContext context;
+
         private static readonly string[] Summaries = new[]
         {
             "Angela", "David", "Cathryn", "Victoria", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
@@ -34,6 +36,13 @@ namespace my_new_app.Controllers
                 status = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost]
+        public void Save([FromBody] UserTask userTask)
+        {
+            context.UserTasks.Add(userTask);
+            context.SaveChanges();
         }
     }
 }

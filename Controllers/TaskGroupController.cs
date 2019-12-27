@@ -47,7 +47,7 @@ namespace my_new_app.Controllers
         [HttpPost]
         public void Save([FromBody] TaskGroup taskGroup)
         {
-            context.TaskGroups.Add(new TaskGroup());
+            context.TaskGroups.Add(taskGroup);
             context.SaveChanges();
         }
     }
