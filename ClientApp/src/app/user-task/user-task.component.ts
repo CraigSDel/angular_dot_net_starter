@@ -9,12 +9,14 @@ import { FormBuilder } from '@angular/forms';
 })
 export class UserTaskComponent implements OnInit {
   public users: User[];
-  userForm;
+  userTaskForm;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
-    this.userForm = this.formBuilder.group({
-      firstName: '',
-      lastName: ''
+    this.userTaskForm = this.formBuilder.group({
+      name: undefined,
+      deadline: undefined,
+      user: undefined,
+      status: undefined
     });
   }
 
@@ -35,11 +37,11 @@ export class UserTaskComponent implements OnInit {
     user.lastName = userData.lastName;
     this.userService.save(user).subscribe(data => {
       console.log('Saved User ' + data);
-      this.userForm.reset();
+      this.userTaskForm.reset();
     },
       error => {
         console.log(error);
-        this.userForm.reset();
+        this.userTaskForm.reset();
       }
     );
   }

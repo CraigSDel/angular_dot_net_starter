@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using my_new_app.Model;
+using my_new_app.Service;
 
 namespace my_new_app.Controllers
 {
@@ -13,21 +14,13 @@ namespace my_new_app.Controllers
     [Route("[controller]")]
     public class TaskGroupController : Controller
     {
-        private readonly IConfiguration configuration;
-
-        readonly UserDataContext context;
+        private TaskGroupService taskGroupService;
 
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Angela", "David", "Cathryn", "Victoria", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
-        };
-
-        public TaskGroupController(ILogger<TaskGroupController> logger, IConfiguration configuration, UserDataContext context)
+        public TaskGroupController(ILogger<TaskGroupController> logger)
         {
             _logger = logger;
-            this.configuration = configuration;
-            this.context = context;
+            this.taskGroupService = new TaskGroupService();
         }
 
         private readonly ILogger<TaskGroupController> _logger;
@@ -35,20 +28,13 @@ namespace my_new_app.Controllers
         [HttpGet]
         public IEnumerable<TaskGroup> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new TaskGroup
-            {
-                id = rng.Next(-20, 55),
-                name = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return taskGroupService.Get();
         }
 
         [HttpPost]
-        public void Save([FromBody] TaskGroup taskGroup)
+        public TaskGroup Save([FromBody] TaskGroup taskGroup)
         {
-            context.TaskGroups.Add(taskGroup);
-            context.SaveChanges();
+           return taskGroupService.Save(taskGroup);
         }
     }
 }

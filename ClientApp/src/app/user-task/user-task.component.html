@@ -8,7 +8,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Firstname</th>
+      <th>Name</th>
       <th>Lastname</th>
     </tr>
   </thead>
@@ -21,18 +21,34 @@
   </tbody>
 </table>
 
-<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
+<form [formGroup]="userTaskForm" (ngSubmit)="onSubmit(userForm.value)">
   <div>
-    <label for="firstName">
-      Firstname
+    <label for="name">
+      Name
     </label>
-    <input id="firstName" type="text" formControlName="firstName">
+    <input class="float-right" id="name" type="text" formControlName="name">
   </div>
   <div>
-    <label for="lastName">
-      Lastname
+    <label for="deadline">
+      Dead Line
     </label>
-    <input id="lastName" type="text" formControlName="lastName">
+    <input class="float-right" id="deadline" type="text" formControlName="deadline">
   </div>
-  <button class="button" type="submit">Save</button>
+  <div>
+    <label for="deadline">
+      User
+    </label>
+    <select class="float-right" formControlName="user">
+      <option *ngFor="let user of users" [ngValue]="user">
+        {{ user.firstName }} {{ user.lastName }}
+      </option>
+    </select>
+  </div>
+  <div>
+    <label for="status">
+      Status
+    </label>
+    <input class="float-right" id="status" type="text" formControlName="status">
+  </div>
+  <button class="button float-right" type="submit">Save</button>
 </form>

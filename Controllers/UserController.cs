@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -17,6 +16,7 @@ namespace my_new_app.Controllers
 
         readonly UserDataContext context;
 
+        private readonly ILogger<UserController> _logger;
 
         private static readonly string[] Summaries = new[]
         {
@@ -29,8 +29,6 @@ namespace my_new_app.Controllers
             this.configuration = configuration;
             this.context = context;
         }
-
-        private readonly ILogger<UserController> _logger;
 
         [HttpGet]
         public IEnumerable<User> Get()
