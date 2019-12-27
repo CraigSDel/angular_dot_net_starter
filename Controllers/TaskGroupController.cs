@@ -20,7 +20,7 @@ namespace my_new_app.Controllers
 
         private static readonly string[] Summaries = new[]
         {
-            "Angela", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
+            "Angela", "David", "Cathryn", "Victoria", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
         };
 
         public TaskGroupController(ILogger<TaskGroupController> logger, IConfiguration configuration, UserDataContext context)

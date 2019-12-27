@@ -4,10 +4,10 @@ import { UserService } from '../../shared/services/user.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html'
+  selector: 'app-user-task',
+  templateUrl: './user-task.component.html'
 })
-export class UserComponent implements OnInit {
+export class UserTaskComponent implements OnInit {
   public users: User[];
   userForm;
 

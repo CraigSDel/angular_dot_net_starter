@@ -1,20 +1,22 @@
-<h1 id="tableLabel">Task Groups</h1>
+<h1 id="tableLabel">Users Tasks</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!taskGroups"><em>Loading...</em></p>
+<p *ngIf="!users"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="taskGroups">
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Name</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let taskGroup of taskGroups">
-      <td>{{ taskGroup.id }}</td>
-      <td>{{ taskGroup.name }}</td>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.firstName }}</td>
+      <td>{{ user.lastName }}</td>
     </tr>
   </tbody>
 </table>

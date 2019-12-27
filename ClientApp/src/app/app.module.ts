@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { UserComponent } from './user/user.component';
 import { TaskGroupComponent } from './task-group/task-group.component';
+import { UserTaskComponent } from './user-task/user-task.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { TaskGroupComponent } from './task-group/task-group.component';
     NavMenuComponent,
     HomeComponent,
     UserComponent,
+    UserTaskComponent,
     TaskGroupComponent
   ],
   imports: [
@@ -26,6 +28,7 @@ import { TaskGroupComponent } from './task-group/task-group.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'user', component: UserComponent },
+      { path: 'user-task', component: UserTaskComponent },
       { path: 'task-group', component: TaskGroupComponent }
     ])
   ],

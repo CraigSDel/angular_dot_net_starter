@@ -13,4 +13,9 @@ export class TaskGroupService {
     public getTaskGroupService(baseUrl: string): Observable<TaskGroup[]> {
       return this.http.get<TaskGroup[]>(baseUrl + 'taskgroup');
     }
+
+
+  public save(taskGroup: TaskGroup): Observable<TaskGroup> {
+    return this.http.post<TaskGroup>('taskGroup', taskGroup);
+    }
 }

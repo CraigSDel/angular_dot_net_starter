@@ -17,13 +17,4 @@ export class UserService {
   public save(user: User): Observable<User> {
     return this.http.post<User>('user', user);
   }
- 
-  private handleError(error: HttpErrorResponse) {
-    console.error('server error:', error);
-    if (error.error instanceof Error) {
-      let errMessage = error.error.message;
-      return Observable.throw(errMessage);
-    }
-    return Observable.throw(error || 'ASP.NET Core server error');
-  }
 }
