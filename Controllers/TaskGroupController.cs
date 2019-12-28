@@ -14,27 +14,33 @@ namespace my_new_app.Controllers
     [Route("[controller]")]
     public class TaskGroupController : Controller
     {
-        private TaskGroupService taskGroupService;
+        private ITaskGroupService _taskGroupService;
 
-
-        public TaskGroupController(ILogger<TaskGroupController> logger)
+        public TaskGroupController(ILogger<TaskGroupController> logger, ITaskGroupService taskGroupService)
         {
             _logger = logger;
-            this.taskGroupService = new TaskGroupService();
+            _taskGroupService = taskGroupService;
         }
 
         private readonly ILogger<TaskGroupController> _logger;
 
         [HttpGet]
-        public IEnumerable<TaskGroup> Get()
+        public List<TaskGroup> Get()
         {
-            return taskGroupService.Get();
+            return _taskGroupService.GetAll();
         }
 
         [HttpPost]
         public TaskGroup Save([FromBody] TaskGroup taskGroup)
         {
-           return taskGroupService.Save(taskGroup);
+            return _taskGroupService.Save(taskGroup);
+        }
+       
+        [HttpPost]
+        [Route("Delete")]
+        public Boolean Delete([FromBody] TaskGroup taskGroup)
+        {
+            return _taskGroupService.Delete(taskGroup);
         }
     }
 }

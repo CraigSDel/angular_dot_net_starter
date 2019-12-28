@@ -1,27 +1,30 @@
 <h1 id="tableLabel">Users Tasks</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p *ngIf="!userTasks"><em>Loading...</em></p>
 
-<p *ngIf="!users"><em>Loading...</em></p>
-
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="userTasks">
   <thead>
     <tr>
       <th>ID</th>
       <th>Name</th>
-      <th>Lastname</th>
+      <th>Status</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.firstName }}</td>
-      <td>{{ user.lastName }}</td>
+    <tr *ngFor="let userTask of userTasks">
+      <td>{{ userTask.id }}</td>
+      <td>{{ userTask.name }}</td>
+      <td>{{ userTask.status }}</td>
+      <td>
+        <button class="button float-right" type="button" (click)="edit(userTask)">Edit</button>
+        <button class="button float-right" type="button" (click)="delete(userTask)">Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>
 
-<form [formGroup]="userTaskForm" (ngSubmit)="onSubmit(userForm.value)">
+<form [formGroup]="userTaskForm" (ngSubmit)="onSubmit(userTaskForm.value)">
   <div>
     <label for="name">
       Name
@@ -40,7 +43,7 @@
     </label>
     <select class="float-right" formControlName="user">
       <option *ngFor="let user of users" [ngValue]="user">
-        {{ user.firstName }} {{ user.lastName }}
+        {{ user.firstName }}
       </option>
     </select>
   </div>

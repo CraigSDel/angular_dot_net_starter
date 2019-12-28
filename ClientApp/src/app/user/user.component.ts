@@ -7,7 +7,7 @@ import { FormBuilder } from '@angular/forms';
   selector: 'app-user',
   templateUrl: './user.component.html'
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   public users: User[];
   userForm;
 
@@ -16,10 +16,6 @@ export class UserComponent implements OnInit {
       firstName: '',
       lastName: ''
     });
-  }
-
-
-  ngOnInit() {
     this.getUsers();
   }
 
@@ -42,5 +38,17 @@ export class UserComponent implements OnInit {
         this.userForm.reset();
       }
     );
+  }
+
+  delete(user) {
+    this.userService.delete(user).subscribe(result => {
+      console.error(result);
+    }, error => {
+      console.error(error);
+    });
+  }
+
+  edit(userTask) {
+    console.error(userTask);
   }
 }

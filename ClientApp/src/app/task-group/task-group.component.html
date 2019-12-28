@@ -1,7 +1,5 @@
 <h1 id="tableLabel">Task Groups</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
-
 <p *ngIf="!taskGroups"><em>Loading...</em></p>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="taskGroups">
@@ -10,6 +8,7 @@
       <th>ID</th>
       <th>Name</th>
       <th>User Tasks</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +20,11 @@
           {{ userTask }}
         </p>
       </td>
-    </tr>
+      <td>
+        <button class="button float-right" type="button" (click)="edit(taskGroup)">Edit</button>
+        <button class="button float-right" type="button" (click)="delete(taskGroup)">Delete</button>
+      </td> 
+    </tr>    
   </tbody>
 </table>
 

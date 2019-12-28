@@ -40,6 +40,18 @@ export class TaskGroupComponent {
     });
   }
 
+  delete(taskGroup) {
+    this.taskGroupService.delete(taskGroup).subscribe(result => {
+        console.error(result);
+    }, error => {
+        console.error(error);
+    });
+  }
+
+  edit(taskGroup) {
+    console.error(taskGroup);
+  }
+
   onSubmit(taskGroupData) {
     const taskGroup = new TaskGroup;
     taskGroup.name = taskGroupData.name;

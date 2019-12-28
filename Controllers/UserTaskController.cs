@@ -1,48 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using my_new_app.Model;
+using my_new_app.Service;
 
 namespace my_new_app.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class UserTaskController : Controller
-    { 
-        readonly UserDataContext context;
+    {
 
-        private static readonly string[] Summaries = new[]
+        private IUserTaskService _userTaskService;
+
+        public UserTaskController(ILogger<UserTaskController> logger, IUserTaskService userTaskService)
         {
-            "Angela", "David", "Cathryn", "Victoria", "Kevin", "Justin", "Craig", "Gregory", "Nunny", "Drummond", "Andrea"
-        };
+            _logger = logger;
+            _userTaskService = userTaskService;
+        }
 
         private readonly ILogger<UserTaskController> _logger;
 
-        public UserTaskController(ILogger<UserTaskController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet]
-        public IEnumerable<UserTask> Get()
+        public List<UserTask> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new UserTask
-            {
-                id = rng.Next(-20, 55),
-                name = Summaries[rng.Next(Summaries.Length)],
-                status = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return _userTaskService.GetAll();
         }
 
         [HttpPost]
-        public void Save([FromBody] UserTask userTask)
+        public UserTask Save([FromBody] UserTask userTask)
         {
-            context.UserTasks.Add(userTask);
-            context.SaveChanges();
+            return _userTaskService.Save(userTask);
+        }
+
+        [HttpPost]
+        [Route("Delete")]
+        public Boolean Delete([FromBody] UserTask userTask)
+        {
+            return _userTaskService.Delete(userTask);
         }
     }
 }

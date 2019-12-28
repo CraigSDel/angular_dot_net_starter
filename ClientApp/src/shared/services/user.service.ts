@@ -14,7 +14,11 @@ export class UserService {
         return this.http.get<User[]>(baseUrl + 'user');
     }
 
-  public save(user: User): Observable<User> {
-    return this.http.post<User>('user', user);
-  }
+    public save(user: User): Observable<User> {
+      return this.http.post<User>('user', user);
+    }
+
+    public delete(user: any) {
+      return this.http.post<User>('user/Delete', user);
+    }
 }

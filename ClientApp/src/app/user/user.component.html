@@ -1,7 +1,5 @@
 <h1 id="tableLabel">Users</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
-
 <p *ngIf="!users"><em>Loading...</em></p>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
@@ -10,6 +8,7 @@
       <th>ID</th>
       <th>Firstname</th>
       <th>Lastname</th>
+      <td>&nbsp;</td>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +16,10 @@
       <td>{{ user.id }}</td>
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>
+      <td>
+        <button class="button float-right" type="button" (click)="edit(user)">Edit</button>
+        <button class="button float-right" type="button" (click)="delete(user)">Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>

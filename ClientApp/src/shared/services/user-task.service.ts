@@ -18,4 +18,8 @@ export class UserTaskService {
   public save(user: UserTask): Observable<UserTask> {
     return this.http.post<UserTask>('userTask', user);
   }
+
+  public delete(userTask: any) {
+    return this.http.post<UserTask>('userTask/Delete', userTask);
+  }
 }

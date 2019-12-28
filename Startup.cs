@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using my_new_app.Model;
+using my_new_app.Service;
 
 namespace my_new_app
 {
@@ -22,14 +23,18 @@ namespace my_new_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<UserDataContext>(options => options.UseSqlite("Data Source=blog.db"));
+            services.AddScoped<ITaskGroupService, TaskGroupServiceImpl>();
+            services.AddScoped<IUserTaskService, UserTaskServiceImpl>();
+            services.AddScoped<IUserService, UserServiceImpl>();
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-            services.AddDbContext<UserDataContext>(options => options.UseSqlite("Data Source=blog.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
