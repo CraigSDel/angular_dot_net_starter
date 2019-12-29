@@ -1,9 +1,9 @@
 import { User } from "./user";
 
 export class UserTask {
-    id: number;
-    name: string;
-    deadline: Date;
-    user: User;
-    status: string;
+    UserTaskId: number;
+    Name: string;
+    Deadline: Date;
+    User: User;
+    Status: string;
 }

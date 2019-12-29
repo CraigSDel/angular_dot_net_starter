@@ -26,13 +26,13 @@ namespace my_new_app.Service
         {
             _context.Users.Remove(user);
             _context.SaveChanges();
-            _logger.LogInformation("Delete Task Group " + user.id + " " + user.firstName);
+            _logger.LogInformation("Delete Task Group " + user.UserId + " " + user.FirstName);
             return true;
         }
 
         public User Get(int id)
         {
-            var user = from u in _context.Users where u.id == id select u;
+            var user = from u in _context.Users where u.UserId == id select u;
             if (user.Count() == 1)
             {
                 return user.First();
@@ -50,7 +50,7 @@ namespace my_new_app.Service
         {
             _context.Users.Add(user);
             _context.SaveChanges();
-            _logger.LogInformation("Saved Task Group " + user.id + " " + user.firstName);
+            _logger.LogInformation("Saved Task Group " + user.UserId + " " + user.FirstName);
             return user;
         }
     }

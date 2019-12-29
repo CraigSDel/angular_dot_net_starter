@@ -10,8 +10,8 @@ namespace my_new_app.Model
     public class TaskGroup
     {
         [Key]
-        public int id { get; set; }
-        public string name { get; set; }
-        public virtual List<UserTask> userTasks { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual List<UserTask> UserTasks { get; set; }
     }
 }

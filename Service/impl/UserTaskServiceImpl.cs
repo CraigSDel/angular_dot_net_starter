@@ -26,13 +26,13 @@ namespace my_new_app.Service
         {
             _context.UserTasks.Remove(userTask);
             _context.SaveChanges();
-            _logger.LogInformation("Delete Task Group " + userTask.id + " " + userTask.name);
+            _logger.LogInformation("Delete Task Group " + userTask.UserTaskId + " " + userTask.Name);
             return true;
         }
 
         public UserTask Get(int id)
         {
-            var taskGroup = from u in _context.UserTasks where u.id == id select u;
+            var taskGroup = from u in _context.UserTasks where u.UserTaskId == id select u;
             if (taskGroup.Count() == 1)
             {
                 return taskGroup.First();
@@ -50,7 +50,7 @@ namespace my_new_app.Service
         {
             _context.UserTasks.Add(userTask);
             _context.SaveChanges();
-            _logger.LogInformation("Saved Task Group " + userTask.id + " " + userTask.name);
+            _logger.LogInformation("Saved Task Group " + userTask.UserTaskId + " " + userTask.Name);
             return userTask;
         }
     }

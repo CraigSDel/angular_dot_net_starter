@@ -26,13 +26,13 @@ namespace my_new_app.Service
         {
             _context.TaskGroups.Remove(taskGroup);
             _context.SaveChanges();
-            _logger.LogInformation("Delete Task Group " + taskGroup.id + " " + taskGroup.name);
+            _logger.LogInformation("Delete Task Group " + taskGroup.Id + " " + taskGroup.Name);
             return true;
         }
 
         public TaskGroup Get(int id)
         {
-            var taskGroup = from u in _context.TaskGroups where u.id == id select u;
+            var taskGroup = from u in _context.TaskGroups where u.Id == id select u;
             if (taskGroup.Count() == 1)
             {
                 return taskGroup.First();
@@ -50,7 +50,7 @@ namespace my_new_app.Service
         {
             _context.TaskGroups.Add(taskGroup);
             _context.SaveChanges();
-            _logger.LogInformation("Saved Task Group " + taskGroup.id + " " + taskGroup.name);
+            _logger.LogInformation("Saved Task Group " + taskGroup.Id + " " + taskGroup.Name);
             return taskGroup;
         }
     }

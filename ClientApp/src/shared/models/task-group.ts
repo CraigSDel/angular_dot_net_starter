@@ -1,7 +1,7 @@
 import { UserTask } from "./user-task";
 
 export class  TaskGroup {
-    id: number;
-    name: string;
-    userTasks: UserTask[];
+    Id: number;
+    Name: string;
+    UserTasks: UserTask[];
 }

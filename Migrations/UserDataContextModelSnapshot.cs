@@ -18,61 +18,58 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.TaskGroup", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("TaskGroups");
                 });
 
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserTaskId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TaskGroupid")
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("TaskGroupId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("deadline")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("status")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("userid")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("id");
+                    b.HasKey("UserTaskId");
 
-                    b.HasIndex("TaskGroupid");
-
-                    b.HasIndex("userid");
+                    b.HasIndex("TaskGroupId");
 
                     b.ToTable("UserTasks");
                 });
 
             modelBuilder.Entity("my_new_app.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("firstName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("lastName")
+                    b.Property<string>("LastName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
@@ -80,12 +77,14 @@ namespace my_new_app.Migrations
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
                     b.HasOne("my_new_app.Model.TaskGroup", null)
-                        .WithMany("userTasks")
-                        .HasForeignKey("TaskGroupid");
+                        .WithMany("UserTasks")
+                        .HasForeignKey("TaskGroupId");
 
-                    b.HasOne("my_new_app.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userid");
+                    b.HasOne("my_new_app.User", "User")
+                        .WithOne("UserTask")
+                        .HasForeignKey("my_new_app.Model.UserTask", "UserTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

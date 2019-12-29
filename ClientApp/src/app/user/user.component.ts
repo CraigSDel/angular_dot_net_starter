@@ -27,8 +27,8 @@ export class UserComponent {
 
   onSubmit(userData) {
     const user = new User;
-    user.firstName = userData.firstName;
-    user.lastName = userData.lastName;
+    user.FirstName = userData.firstName;
+    user.LastName = userData.lastName;
     this.userService.save(user).subscribe(data => {
       console.log('Saved User ' + data);
       this.userForm.reset();

@@ -11,7 +11,7 @@ import { UserService } from '../../shared/services/user.service';
 })
 export class UserTaskComponent {
   public userTasks: UserTask[];
-  private users: User[];
+  public users: User[];
   userTaskForm;
 
   constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
@@ -39,8 +39,8 @@ export class UserTaskComponent {
 
   onSubmit(userData) {
     const userTask = new UserTask;
-    userTask.name = userData.name;
-    userTask.user = userData.user;
+    userTask.Name = userData.name;
+    userTask.User = userData.user;
     this.userTaskService.save(userTask).subscribe(data => {
       console.log('Saved User ' + data);
       this.userTaskForm.reset();

@@ -54,8 +54,8 @@ export class TaskGroupComponent {
 
   onSubmit(taskGroupData) {
     const taskGroup = new TaskGroup;
-    taskGroup.name = taskGroupData.name;
-    taskGroup.userTasks = taskGroupData.userTasks;
+    taskGroup.Name = taskGroupData.name;
+    taskGroup.UserTasks = taskGroupData.userTasks;
     this.taskGroupService.save(taskGroup).subscribe(data => {
       console.log('Saved User ' + data);
       this.taskGroupForm.reset();
