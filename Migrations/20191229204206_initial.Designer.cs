@@ -9,7 +9,7 @@ using my_new_app.Model;
 namespace my_new_app.Migrations
 {
     [DbContext(typeof(UserDataContext))]
-    [Migration("20191229175018_initial")]
+    [Migration("20191229204206_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,7 +81,7 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
-                    b.HasOne("my_new_app.Model.TaskGroup", null)
+                    b.HasOne("my_new_app.Model.TaskGroup", "TaskGroup")
                         .WithMany("UserTasks")
                         .HasForeignKey("TaskGroupId");
 

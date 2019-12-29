@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using my_new_app.Model;
 using System;
@@ -48,8 +49,19 @@ namespace my_new_app.Service
 
         public TaskGroup Save(TaskGroup taskGroup)
         {
-            _context.TaskGroups.Add(taskGroup);
-            _context.SaveChanges();
+            
+            try
+            {
+                _context.AddRange(taskGroup.UserTasks); 
+                taskGroup.UserTasks.ForEach(l => _context.Entry(l).State = EntityState.Unchanged); 
+                _context.TaskGroups.Add(taskGroup);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _context.RemoveRange(taskGroup.UserTasks); 
+                throw;
+            }
             _logger.LogInformation("Saved Task Group " + taskGroup.Id + " " + taskGroup.Name);
             return taskGroup;
         }

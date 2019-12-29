@@ -8,7 +8,7 @@ namespace my_new_app.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        
+
         public virtual List<UserTask> UserTasks { get; set; }
     }
 }

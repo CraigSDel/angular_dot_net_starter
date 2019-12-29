@@ -79,7 +79,7 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
-                    b.HasOne("my_new_app.Model.TaskGroup", null)
+                    b.HasOne("my_new_app.Model.TaskGroup", "TaskGroup")
                         .WithMany("UserTasks")
                         .HasForeignKey("TaskGroupId");
 

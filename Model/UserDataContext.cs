@@ -14,7 +14,7 @@ namespace my_new_app.Model
             modelBuilder.Entity<UserTask>()
                 .HasOne(u => u.User)
                 .WithMany()
-                .HasForeignKey(u => u.UserId);
+                .HasForeignKey(u => u.UserId);      
         }
 
         public DbSet<User> Users { get; set; }
