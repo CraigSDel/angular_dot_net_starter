@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace my_new_app.Model
 {
@@ -16,10 +11,10 @@ namespace my_new_app.Model
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasOne(b => b.UserTask)
-                .WithOne(i => i.User)
-                .HasForeignKey<UserTask>(b => b.UserForeignKey);
+            modelBuilder.Entity<UserTask>()
+                .HasOne(u => u.User)
+                .WithMany()
+                .HasForeignKey(u => u.UserId);
         }
 
         public DbSet<User> Users { get; set; }

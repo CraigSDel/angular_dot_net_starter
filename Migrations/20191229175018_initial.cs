@@ -38,11 +38,12 @@ namespace my_new_app.Migrations
                 name: "UserTasks",
                 columns: table => new
                 {
-                    UserTaskId = table.Column<int>(nullable: false),
+                    UserTaskId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Deadline = table.Column<DateTime>(nullable: false),
                     Status = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: true),
                     TaskGroupId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -55,17 +56,22 @@ namespace my_new_app.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserTasks_Users_UserTaskId",
-                        column: x => x.UserTaskId,
+                        name: "FK_UserTasks_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserTasks_TaskGroupId",
                 table: "UserTasks",
                 column: "TaskGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTasks_UserId",
+                table: "UserTasks",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

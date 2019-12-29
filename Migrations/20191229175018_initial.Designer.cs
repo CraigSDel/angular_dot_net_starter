@@ -9,7 +9,7 @@ using my_new_app.Model;
 namespace my_new_app.Migrations
 {
     [DbContext(typeof(UserDataContext))]
-    [Migration("20191229092106_initial")]
+    [Migration("20191229175018_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,7 @@ namespace my_new_app.Migrations
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
                     b.Property<int>("UserTaskId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Deadline")
@@ -49,12 +50,14 @@ namespace my_new_app.Migrations
                     b.Property<int?>("TaskGroupId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("UserTaskId");
 
                     b.HasIndex("TaskGroupId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserTasks");
                 });
@@ -83,10 +86,8 @@ namespace my_new_app.Migrations
                         .HasForeignKey("TaskGroupId");
 
                     b.HasOne("my_new_app.User", "User")
-                        .WithOne("UserTask")
-                        .HasForeignKey("my_new_app.Model.UserTask", "UserTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
