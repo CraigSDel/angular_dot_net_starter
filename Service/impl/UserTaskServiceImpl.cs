@@ -43,7 +43,10 @@ namespace my_new_app.Service
 
         public List<UserTask> GetAll()
         {
-            return _context.UserTasks.ToList();
+            List<UserTask> userTask = _context.UserTasks
+                .Include(user => user.User)
+                .ToList();
+            return userTask;
         }
 
 
