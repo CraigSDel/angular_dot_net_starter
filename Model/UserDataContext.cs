@@ -14,6 +14,14 @@ namespace my_new_app.Model
          : base(options)
         { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasOne(b => b.UserTask)
+                .WithOne(i => i.User)
+                .HasForeignKey<UserTask>(b => b.UserForeignKey);
+        }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserTask> UserTasks { get; set; }

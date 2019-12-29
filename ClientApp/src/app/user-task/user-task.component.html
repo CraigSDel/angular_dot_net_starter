@@ -13,9 +13,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let userTask of userTasks">
-      <td>{{ userTask.UserTaskId }}</td>
-      <td>{{ userTask.Name }}</td>
-      <td>{{ userTask.Status }}</td>
+      <td>{{ userTask.userTaskId }}</td>
+      <td>{{ userTask.name }}</td>
+      <td>{{ userTask.status }}</td>
       <td>
         <button class="button float-right" type="button" (click)="edit(userTask)">Edit</button>
         <button class="button float-right" type="button" (click)="delete(userTask)">Delete</button>

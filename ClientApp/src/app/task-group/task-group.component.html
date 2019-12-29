@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let taskGroup of taskGroups">
-      <td>{{ taskGroup.id }}</td>
+      <td>{{ taskGroup.taskId }}</td>
       <td>{{ taskGroup.name }}</td>
       <td>
         <p *ngFor="let userTask of taskGroup.userTasks">
