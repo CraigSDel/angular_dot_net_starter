@@ -52,17 +52,19 @@ namespace my_new_app.Service
 
         public TaskGroup Save(TaskGroup taskGroup)
         {
-            
-            try
-            {
-                _context.AddRange(taskGroup.UserTasks); 
-                taskGroup.UserTasks.ForEach(l => _context.Entry(l).State = EntityState.Unchanged); 
+
+            try {
+                //_context.UserTasks.AddRange(taskGroup.UserTasks); 
+                taskGroup.UserTasks.ForEach(userTask => {
+                    _context.Entry(userTask).State = EntityState.Modified;
+                    _context.Entry(userTask.User).State = EntityState.Unchanged;
+                    });
                 _context.TaskGroups.Add(taskGroup);
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
-                _context.RemoveRange(taskGroup.UserTasks); 
+                _context.UserTasks.RemoveRange(taskGroup.UserTasks); 
                 throw;
             }
             _logger.LogInformation("Saved Task Group " + taskGroup.Id + " " + taskGroup.Name);
