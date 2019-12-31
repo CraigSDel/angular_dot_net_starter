@@ -9,8 +9,8 @@ using my_new_app.Model;
 namespace my_new_app.Migrations
 {
     [DbContext(typeof(UserDataContext))]
-    [Migration("20191229204206_initial")]
-    partial class initial
+    [Migration("20191231074358_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,14 +20,14 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.TaskGroup", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TaskGroupId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("TaskGroupId");
 
                     b.ToTable("TaskGroups");
                 });
@@ -81,7 +81,7 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
-                    b.HasOne("my_new_app.Model.TaskGroup", "TaskGroup")
+                    b.HasOne("my_new_app.Model.TaskGroup", null)
                         .WithMany("UserTasks")
                         .HasForeignKey("TaskGroupId");
 

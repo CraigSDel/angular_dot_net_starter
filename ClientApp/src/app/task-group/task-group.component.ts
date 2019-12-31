@@ -19,7 +19,8 @@ export class TaskGroupComponent {
     this.getTaskGroups();
     this.getUserTasks();
     this.taskGroupForm = this.formBuilder.group({
-      name: '',
+      taskGroupId: undefined,
+      name: undefined,
       userTasks: new FormControl(this.userTasks)
     });
   }
@@ -49,11 +50,16 @@ export class TaskGroupComponent {
   }
 
   edit(taskGroup) {
-    console.error(taskGroup);
+    this.taskGroupForm = this.formBuilder.group({
+      taskGroupId: taskGroup.taskGroupId,
+      name: taskGroup.name,
+      userTasks: new FormControl(taskGroup.userTasks)
+    });
   }
 
   onSubmit(taskGroupData) {
-    const taskGroup = new TaskGroup;
+    const taskGroup = new TaskGroup();
+    taskGroup.TaskGroupId = taskGroupData.taskGroupId;
     taskGroup.Name = taskGroupData.name;
     taskGroup.UserTasks = taskGroupData.userTasks;
     this.taskGroupService.save(taskGroup).subscribe(data => {
@@ -65,5 +71,9 @@ export class TaskGroupComponent {
         this.taskGroupForm.reset();
       }
     );
+  }
+
+  public CompareUserTask(Param1: UserTask, Param2: UserTask): boolean {
+    return Param1 && Param2 ? Param1.UserTaskId === Param2.UserTaskId : false;
   }
 }

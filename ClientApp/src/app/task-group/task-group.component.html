@@ -13,11 +13,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let taskGroup of taskGroups">
-      <td>{{ taskGroup.taskId }}</td>
+      <td>{{ taskGroup.taskGroupId }}</td>
       <td>{{ taskGroup.name }}</td>
       <td>
         <p *ngFor="let userTask of taskGroup.userTasks">
-          {{ userTask }}
+          {{ userTask.name }}
         </p>
       </td>
       <td>
@@ -39,12 +39,13 @@
     <label for="userTask">
       User Tasks
     </label>
-    <select class="float-right" multiple formControlName="userTasks">
+    <select class="float-right" multiple formControlName="userTasks" [compareWith]="CompareUserTask">
       <option *ngFor="let userTask of userTasks" [ngValue]="userTask">
         {{ userTask.name }}
       </option>
     </select>
   </div>
-  <br />
-  <button class="button float-right" type="submit">Save</button>
+  <div>
+    <button class="button float-right" type="submit">Save</button>
+  </div>
 </form>

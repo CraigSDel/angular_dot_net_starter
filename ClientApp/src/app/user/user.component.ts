@@ -13,8 +13,9 @@ export class UserComponent {
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
     this.userForm = this.formBuilder.group({
-      firstName: '',
-      lastName: ''
+      userId: undefined,
+      firstName: undefined,
+      lastName: undefined
     });
     this.getUsers();
   }
@@ -26,7 +27,8 @@ export class UserComponent {
   }
 
   onSubmit(userData) {
-    const user = new User;
+    const user = new User();
+    user.UserId = userData.userId;
     user.FirstName = userData.firstName;
     user.LastName = userData.lastName;
     this.userService.save(user).subscribe(data => {
@@ -49,6 +51,10 @@ export class UserComponent {
   }
 
   edit(userTask) {
-    console.error(userTask);
+    this.userForm = this.formBuilder.group({
+      userId: userTask.userId,
+      firstName: userTask.firstName,
+      lastName: userTask.lastName
+    });
   }
 }

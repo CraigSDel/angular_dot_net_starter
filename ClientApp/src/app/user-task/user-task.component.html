@@ -7,6 +7,7 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
+      <th>Deadline</th>
       <th>Status</th>
       <th>&nbsp;</th>
     </tr>
@@ -15,6 +16,7 @@
     <tr *ngFor="let userTask of userTasks">
       <td>{{ userTask.userTaskId }}</td>
       <td>{{ userTask.name }}</td>
+      <td>{{ userTask.deadline }}</td>
       <td>{{ userTask.status }}</td>
       <td>
         <button class="button float-right" type="button" (click)="edit(userTask)">Edit</button>
@@ -35,15 +37,15 @@
     <label for="deadline">
       Dead Line
     </label>
-    <input class="float-right" id="deadline" type="text" formControlName="deadline">
+    <input class="float-right" id="deadline" type="date" formControlName="deadline">
   </div>
   <div>
-    <label for="deadline">
+    <label for="user ">
       User
     </label>
-    <select class="float-right" formControlName="user">
+    <select class="float-right" formControlName="user" [compareWith]="CompareUser">
       <option *ngFor="let user of users" [ngValue]="user">
-        {{ user.firstName }}
+        {{ user.firstName }} {{ user.lastName }}
       </option>
     </select>
   </div>
@@ -51,7 +53,11 @@
     <label for="status">
       Status
     </label>
-    <input class="float-right" id="status" type="text" formControlName="status">
+    <select class="float-right" formControlName="status">
+      <option *ngFor="let status of statuses" [ngValue]="status">
+        {{ status }}
+      </option>
+    </select>
   </div>
   <button class="button float-right" type="submit">Save</button>
 </form>

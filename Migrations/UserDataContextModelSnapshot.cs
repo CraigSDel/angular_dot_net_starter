@@ -18,14 +18,14 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.TaskGroup", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TaskGroupId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("TaskGroupId");
 
                     b.ToTable("TaskGroups");
                 });
@@ -79,7 +79,7 @@ namespace my_new_app.Migrations
 
             modelBuilder.Entity("my_new_app.Model.UserTask", b =>
                 {
-                    b.HasOne("my_new_app.Model.TaskGroup", "TaskGroup")
+                    b.HasOne("my_new_app.Model.TaskGroup", null)
                         .WithMany("UserTasks")
                         .HasForeignKey("TaskGroupId");
 

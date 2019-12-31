@@ -1,21 +1,26 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
 import { User } from '../../shared/models/user';
 import { UserService } from '../../shared/services/user.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-task',
-  templateUrl: './user-task.component.html'
+  templateUrl: './user-task.component.html',
+  providers: [DatePipe]  
 })
 export class UserTaskComponent {
   public userTasks: UserTask[];
   public users: User[];
   userTaskForm;
 
-  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
+  statuses = ['To-Do', 'In-Progress', 'Done'];
+
+  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private datePipe: DatePipe) {
     this.userTaskForm = this.formBuilder.group({
+      userTaskId: undefined,
       name: undefined,
       deadline: undefined,
       user: undefined,
@@ -38,9 +43,12 @@ export class UserTaskComponent {
   }
 
   onSubmit(userData) {
-    const userTask = new UserTask;
+    const userTask = new UserTask();
+    userTask.UserTaskId = userData.userTaskId;
     userTask.Name = userData.name;
     userTask.User = userData.user;
+    userTask.Deadline = userData.deadline;
+    userTask.Status = userData.status;
     this.userTaskService.save(userTask).subscribe(data => {
       console.log('Saved User ' + data);
       this.userTaskForm.reset();
@@ -61,6 +69,16 @@ export class UserTaskComponent {
   }
 
   edit(userTask) {
-    console.error(userTask);
+    this.userTaskForm = this.formBuilder.group({
+      userTaskId: userTask.userTaskId,
+      name: userTask.name,
+      deadline: this.datePipe.transform(new Date(userTask.deadline), 'yyyy-MM-dd'),
+      user: userTask.user,
+      status: userTask.status
+    });
+  }
+
+  public CompareUser(Param1: User, Param2: User): boolean {
+    return Param1 && Param2 ? Param1.UserId === Param2.UserId : false;
   }
 }

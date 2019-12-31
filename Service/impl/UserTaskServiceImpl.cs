@@ -53,6 +53,10 @@ namespace my_new_app.Service
         public UserTask Save(UserTask userTask)
         {
             _context.UserTasks.Add(userTask);
+            if(userTask.UserTaskId > 0)
+            {
+                _context.Entry(userTask).State = EntityState.Modified;
+            }
             _context.Entry(userTask.User).State = EntityState.Modified;
             _context.SaveChanges();
             _logger.LogInformation("Saved Task Group " + userTask.UserTaskId + " " + userTask.Name);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using my_new_app.Model;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,11 @@ namespace my_new_app.Service
         public User Save(User user)
         {
             _context.Users.Add(user);
+            if (user.UserId > 0)
+            {
+                _context.Entry(user).State = EntityState.Modified;
+
+            }
             _context.SaveChanges();
             _logger.LogInformation("Saved Task Group " + user.UserId + " " + user.FirstName);
             return user;

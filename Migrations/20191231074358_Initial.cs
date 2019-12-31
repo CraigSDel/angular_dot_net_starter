@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace my_new_app.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,13 +11,13 @@ namespace my_new_app.Migrations
                 name: "TaskGroups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    TaskGroupId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskGroups", x => x.Id);
+                    table.PrimaryKey("PK_TaskGroups", x => x.TaskGroupId);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,7 +53,7 @@ namespace my_new_app.Migrations
                         name: "FK_UserTasks_TaskGroups_TaskGroupId",
                         column: x => x.TaskGroupId,
                         principalTable: "TaskGroups",
-                        principalColumn: "Id",
+                        principalColumn: "TaskGroupId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UserTasks_Users_UserId",
