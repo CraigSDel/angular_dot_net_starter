@@ -44,7 +44,6 @@ export class UserComponent {
 
   delete(user) {
     this.userService.delete(user).subscribe(result => {
-      console.error(result);
       this.getUsers();
     }, error => {
       console.error(error);

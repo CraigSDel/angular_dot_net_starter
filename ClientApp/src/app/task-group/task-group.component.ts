@@ -43,7 +43,7 @@ export class TaskGroupComponent {
 
   delete(taskGroup) {
     this.taskGroupService.delete(taskGroup).subscribe(result => {
-        console.error(result);
+      this.getTaskGroups();
     }, error => {
         console.error(error);
     });
@@ -63,7 +63,6 @@ export class TaskGroupComponent {
     taskGroup.Name = taskGroupData.name;
     taskGroup.UserTasks = taskGroupData.userTasks;
     this.taskGroupService.save(taskGroup).subscribe(data => {
-      console.log('Saved User ' + data);
       this.taskGroupForm.reset();
       this.getTaskGroups();
     },

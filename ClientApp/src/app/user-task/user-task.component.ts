@@ -63,7 +63,7 @@ export class UserTaskComponent {
 
   delete(userTask) {
     this.userTaskService.delete(userTask).subscribe(result => {
-      console.error(result);
+      this.getUserTasks();
     }, error => {
       console.error(error);
     });
