@@ -52,6 +52,7 @@ export class UserTaskComponent {
     this.userTaskService.save(userTask).subscribe(data => {
       console.log('Saved User ' + data);
       this.userTaskForm.reset();
+      this.getUserTasks();
     },
       error => {
         console.log(error);

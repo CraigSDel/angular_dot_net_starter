@@ -32,8 +32,8 @@ export class UserComponent {
     user.FirstName = userData.firstName;
     user.LastName = userData.lastName;
     this.userService.save(user).subscribe(data => {
-      console.log('Saved User ' + data);
       this.userForm.reset();
+      this.getUsers();
     },
       error => {
         console.log(error);
@@ -45,6 +45,7 @@ export class UserComponent {
   delete(user) {
     this.userService.delete(user).subscribe(result => {
       console.error(result);
+      this.getUsers();
     }, error => {
       console.error(error);
     });
