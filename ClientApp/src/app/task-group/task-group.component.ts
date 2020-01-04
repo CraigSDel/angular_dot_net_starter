@@ -8,7 +8,8 @@ import { UserTask } from '../../shared/models/user-task';
 
 @Component({
   selector: 'app-task-group',
-  templateUrl: './task-group.component.html'
+  templateUrl: './task-group.component.html',
+  styleUrls: ['./task-group.css']
 })
 export class TaskGroupComponent {
   public taskGroups: TaskGroup[];

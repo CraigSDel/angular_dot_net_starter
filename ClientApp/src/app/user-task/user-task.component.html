@@ -43,7 +43,7 @@
     <label for="user ">
       User
     </label>
-    <select class="float-right" formControlName="user" [compareWith]="CompareUser">
+    <select class="float-right" formControlName="user" [compareWith]="CompareUser" size="1">
       <option *ngFor="let user of users" [ngValue]="user">
         {{ user.firstName }} {{ user.lastName }}
       </option>
