@@ -31,13 +31,13 @@ export class UserTaskComponent {
   }
 
   getUserTasks(): void {
-    this.userTaskService.getUserTasks(this.baseUrl).subscribe(result => {
+    this.userTaskService.getAll(this.baseUrl).subscribe(result => {
       this.userTasks = result;
     }, error => console.error(error));
   }
 
   getUsers(): void {
-    this.userService.getUsers(this.baseUrl).subscribe(result => {
+    this.userService.getAll(this.baseUrl).subscribe(result => {
       this.users = result;
     }, error => console.error(error));
   }

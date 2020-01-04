@@ -1,5 +1,46 @@
 <div class="container-fluid">
   <div class="row">
+    <div class="col-sm-11">
+      <h1 id="tableLabel">Task Groups</h1>
+
+      <p *ngIf="!taskGroups"><em>Loading...</em></p>
+
+      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="taskGroups">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>User Tasks</th>
+            <th>User Task Count</th>
+            <th>&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let taskGroup of taskGroups">
+            <td>{{ taskGroup.taskGroupId }}</td>
+            <td>{{ taskGroup.name }}</td>
+            <td>
+              <p *ngFor="let userTask of taskGroup.userTasks">
+                {{ userTask.name }}
+              </p>
+            </td>
+            <td>
+                {{ taskGroup.userTasks.length }}
+            </td>
+            <td>
+              <button class="button float-right" type="button" (click)="edit(taskGroup)">Edit</button>
+              <button class="button float-right" type="button" (click)="delete(taskGroup)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-1">
+      <button class="button float-right" type="submit" (click)="orderByName()">Order By Name</button>
+      <button class="button float-right" type="submit" (click)="orderByTaskCount()">Order By Task Count</button>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-12 col-md-6">
       <app-task-group></app-task-group>
     </div>

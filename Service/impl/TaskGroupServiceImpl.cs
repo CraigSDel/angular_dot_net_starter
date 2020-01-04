@@ -44,11 +44,28 @@ namespace my_new_app.Service
         public List<TaskGroup> GetAll()
         {
             List<TaskGroup> taskGroups = _context.TaskGroups
-                .Include( userTask => userTask.UserTasks)
+                .Include(userTask => userTask.UserTasks)
                 .ToList();
             return taskGroups;
         }
 
+        public List<TaskGroup> GetAllOrderByName()
+        {
+            List<TaskGroup> taskGroups = _context.TaskGroups
+                .OrderBy(taskGroup => taskGroup.Name)
+                .Include(userTask => userTask.UserTasks)
+                .ToList();
+            return taskGroups;
+        }
+
+        public List<TaskGroup> GetAllOrderByTaskCount()
+        {
+            List<TaskGroup> taskGroups = _context.TaskGroups
+                .OrderByDescending(taskGroup => taskGroup.UserTasks.Count)
+                .Include(userTask => userTask.UserTasks)
+                .ToList();
+            return taskGroups;
+        }
 
         public TaskGroup Save(TaskGroup taskGroup)
         {

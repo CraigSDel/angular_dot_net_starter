@@ -4,21 +4,21 @@ import { User } from '../../shared/models/user';
 import { Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class UserService {
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-    public getUsers(baseUrl: string): Observable<User[]>{
-        return this.http.get<User[]>(baseUrl + 'user');
-    }
+  public getAll(baseUrl: string): Observable<User[]> {
+    return this.http.get<User[]>(baseUrl + 'user');
+  }
 
-    public save(user: User): Observable<User> {
-      return this.http.post<User>('user', user);
-    }
+  public save(user: User): Observable<User> {
+    return this.http.post<User>('user', user);
+  }
 
-    public delete(user: any) {
-      return this.http.post<User>('user/Delete', user);
-    }
+  public delete(user: any) {
+    return this.http.post<User>('user/Delete', user);
+  }
 }

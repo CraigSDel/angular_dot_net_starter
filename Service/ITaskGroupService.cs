@@ -14,5 +14,9 @@ namespace my_new_app.Service
         TaskGroup Save(TaskGroup taskGroup);
 
         Boolean Delete(TaskGroup taskGroup);
+
+        List<TaskGroup> GetAllOrderByName();
+
+        List<TaskGroup> GetAllOrderByTaskCount();
     }
 }

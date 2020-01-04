@@ -27,7 +27,7 @@ export class TaskGroupComponent {
   }
 
   getUserTasks() {
-    this.userTaskService.getUserTasks(this.baseUrl).subscribe(result => {
+    this.userTaskService.getAll(this.baseUrl).subscribe(result => {
       this.userTasks = result;
     }, error => {
       console.error(error)
@@ -35,7 +35,7 @@ export class TaskGroupComponent {
   }
 
   getTaskGroups(): void {
-    this.taskGroupService.getTaskGroupService(this.baseUrl).subscribe(result => {
+    this.taskGroupService.getAll(this.baseUrl).subscribe(result => {
       this.taskGroups = result;
     }, error => {
       console.error(error)

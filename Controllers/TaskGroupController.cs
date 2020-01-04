@@ -30,6 +30,20 @@ namespace my_new_app.Controllers
             return _taskGroupService.GetAll();
         }
 
+        [HttpGet]
+        [Route("GetAllOrderByName")]
+        public List<TaskGroup> GetAllOrderByName()
+        {
+            return _taskGroupService.GetAllOrderByName();
+        }
+
+        [HttpGet]
+        [Route("GetAllOrderByTaskCount")]
+        public List<TaskGroup> GetAllOrderByTaskCount()
+        {
+            return _taskGroupService.GetAllOrderByTaskCount();
+        }
+
         [HttpPost]
         public TaskGroup Save([FromBody] TaskGroup taskGroup)
         {
