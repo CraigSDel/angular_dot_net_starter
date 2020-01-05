@@ -1,41 +1,49 @@
-<h1 id="tableLabel">Users</h1>
-
-<p *ngIf="!users"><em>Loading...</em></p>
-
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Firstname</th>
-      <th>Lastname</th>
-      <td>&nbsp;</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.userId }}</td>
-      <td>{{ user.firstName }}</td>
-      <td>{{ user.lastName }}</td>
-      <td>
-        <button class="button float-right" type="button" (click)="edit(user)">Edit</button>
-        <button class="button float-right" type="button" (click)="delete(user)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
-  <div>
-    <label for="firstName">
-      Firstname
-    </label>
-    <input class="float-right" id="firstName" type="text" formControlName="firstName">
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <h1 id="tableLabel">Users</h1>
   </div>
-  <div>
-    <label for="lastName">
-      Lastname
-    </label>
-    <input class="float-right" id="lastName" type="text" formControlName="lastName">
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+    <p *ngIf="!users"><em>Loading...</em></p>
+
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <td>&nbsp;</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.userId }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>
+            <button class="button float-right" type="button" (click)="edit(user)">Edit</button>
+            <button class="button float-right" type="button" (click)="delete(user)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <button class="button float-right" type="submit">Save</button>
-</form>
+  <div class="col-sm-12 col-md-6">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)">
+      <div>
+        <label for="firstName">
+          Firstname
+        </label>
+        <input class="float-right" id="firstName" type="text" formControlName="firstName">
+      </div>
+      <div>
+        <label for="lastName">
+          Lastname
+        </label>
+        <input class="float-right" id="lastName" type="text" formControlName="lastName">
+      </div>
+      <button class="button float-right" type="submit">Save</button>
+    </form>
+  </div>
+</div>

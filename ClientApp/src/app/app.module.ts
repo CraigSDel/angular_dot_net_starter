@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { UserComponent } from './user/user.component';
 import { TaskGroupComponent } from './task-group/task-group.component';
 import { UserTaskComponent } from './user-task/user-task.component';
+import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { UserTaskComponent } from './user-task/user-task.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    EditComponent,
     UserComponent,
     UserTaskComponent,
     TaskGroupComponent
@@ -27,6 +29,7 @@ import { UserTaskComponent } from './user-task/user-task.component';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'edit', component: EditComponent },
       { path: 'user', component: UserComponent },
       { path: 'user-task', component: UserTaskComponent },
       { path: 'task-group', component: TaskGroupComponent }

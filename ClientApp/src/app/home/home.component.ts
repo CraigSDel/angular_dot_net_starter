@@ -3,6 +3,7 @@ import { TaskGroupService } from '../../shared/services/task-group.service';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
 import { TaskGroup } from '../../shared/models/task-group';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomeComponent {
   public userTasks: UserTask[];
   taskGroupForm;
 
-  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, @Inject('BASE_URL') private baseUrl: string, private router: Router) {
     this.getTaskGroups();
     this.getUserTasks();
   }
@@ -48,5 +49,9 @@ export class HomeComponent {
     }, error => {
       console.error(error)
     });
+  }
+
+  edit() {
+    this.router.navigate(['/edit']);
   }
 }

@@ -1,63 +1,72 @@
-<h1 id="tableLabel">Users Tasks</h1>
+<div class="row">
+  <div class="col-12">
+    <h1 id="tableLabel">Users Tasks</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-6">
 
-<p *ngIf="!userTasks"><em>Loading...</em></p>
+    <p *ngIf="!userTasks"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="userTasks">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Deadline</th>
-      <th>Status</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let userTask of userTasks">
-      <td>{{ userTask.userTaskId }}</td>
-      <td>{{ userTask.name }}</td>
-      <td>{{ userTask.deadline }}</td>
-      <td>{{ userTask.status }}</td>
-      <td>
-        <button class="button float-right" type="button" (click)="edit(userTask)">Edit</button>
-        <button class="button float-right" type="button" (click)="delete(userTask)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<form [formGroup]="userTaskForm" (ngSubmit)="onSubmit(userTaskForm.value)">
-  <div>
-    <label for="name">
-      Name
-    </label>
-    <input class="float-right" id="name" type="text" formControlName="name">
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="userTasks">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Deadline</th>
+          <th>Status</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userTask of userTasks">
+          <td>{{ userTask.userTaskId }}</td>
+          <td>{{ userTask.name }}</td>
+          <td>{{ userTask.deadline }}</td>
+          <td>{{ userTask.status }}</td>
+          <td>
+            <button class="button float-right" type="button" (click)="edit(userTask)">Edit</button>
+            <button class="button float-right" type="button" (click)="delete(userTask)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div>
-    <label for="deadline">
-      Dead Line
-    </label>
-    <input class="float-right" id="deadline" type="date" formControlName="deadline">
+  <div class="col-sm-12 col-md-6">
+    <form [formGroup]="userTaskForm" (ngSubmit)="onSubmit(userTaskForm.value)">
+      <div>
+        <label for="name">
+          Name
+        </label>
+        <input class="float-right" id="name" type="text" formControlName="name">
+      </div>
+      <div>
+        <label for="deadline">
+          Dead Line
+        </label>
+        <input class="float-right" id="deadline" type="date" formControlName="deadline">
+      </div>
+      <div>
+        <label for="user ">
+          User
+        </label>
+        <select class="float-right" formControlName="user" [compareWith]="CompareUser" size="1">
+          <option *ngFor="let user of users" [ngValue]="user">
+            {{ user.firstName }} {{ user.lastName }}
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="status">
+          Status
+        </label>
+        <select class="float-right" formControlName="status">
+          <option *ngFor="let status of statuses" [ngValue]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+      <button class="button float-right" type="submit">Save</button>
+    </form>
   </div>
-  <div>
-    <label for="user ">
-      User
-    </label>
-    <select class="float-right" formControlName="user" [compareWith]="CompareUser" size="1">
-      <option *ngFor="let user of users" [ngValue]="user">
-        {{ user.firstName }} {{ user.lastName }}
-      </option>
-    </select>
-  </div>
-  <div>
-    <label for="status">
-      Status
-    </label>
-    <select class="float-right" formControlName="status">
-      <option *ngFor="let status of statuses" [ngValue]="status">
-        {{ status }}
-      </option>
-    </select>
-  </div>
-  <button class="button float-right" type="submit">Save</button>
-</form>
+</div>

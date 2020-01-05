@@ -1,5 +1,5 @@
 import { Component, Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpParams,HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TaskGroup } from '../models/task-group';
 
