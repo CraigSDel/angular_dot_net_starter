@@ -58,6 +58,10 @@ export class TaskGroupComponent {
     });
   }
 
+  clear() {
+    this.taskGroupForm.reset();
+  }
+
   onSubmit(taskGroupData) {
     const taskGroup = new TaskGroup();
     taskGroup.TaskGroupId = taskGroupData.taskGroupId;

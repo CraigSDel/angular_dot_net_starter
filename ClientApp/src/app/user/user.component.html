@@ -43,7 +43,10 @@
         </label>
         <input class="float-right" id="lastName" type="text" formControlName="lastName">
       </div>
-      <button class="button float-right" type="submit">Save</button>
+      <div class="float-right">
+        <button class="button" type="button" (click)="clear()">Clear</button>
+        <button class="button" type="submit">Save</button>
+      </div>
     </form>
   </div>
 </div>

@@ -42,6 +42,10 @@ export class UserComponent {
     );
   }
 
+  clear() {
+    this.userForm.reset();
+  }
+
   delete(user) {
     this.userService.delete(user).subscribe(result => {
       this.getUsers();

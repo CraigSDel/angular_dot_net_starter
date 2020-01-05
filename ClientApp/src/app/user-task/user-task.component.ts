@@ -79,6 +79,10 @@ export class UserTaskComponent {
     });
   }
 
+  clear() {
+    this.userTaskForm.reset();
+  }
+
   public CompareUser(Param1: User, Param2: User): boolean {
     return Param1 && Param2 ? Param1.UserId === Param2.UserId : false;
   }
