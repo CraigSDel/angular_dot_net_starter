@@ -70,6 +70,7 @@ export class TaskGroupComponent {
     this.taskGroupService.save(taskGroup).subscribe(data => {
       this.taskGroupForm.reset();
       this.getTaskGroups();
+      this.getUserTasks();
     },
       error => {
         console.log(error);

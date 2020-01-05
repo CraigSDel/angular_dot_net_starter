@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-edit',
@@ -10,5 +10,9 @@ export class EditComponent {
     /** edit ctor */
     constructor() {
 
-    }
+  }
+
+  refresh() {
+    location.reload();
+  }
 }
