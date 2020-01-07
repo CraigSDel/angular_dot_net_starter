@@ -69,26 +69,28 @@ namespace my_new_app.Service
 
         public TaskGroup Save(TaskGroup taskGroup)
         {
-            try {
-                taskGroup.UserTasks.ForEach(userTask => {
-                    _context.Entry(userTask).State = EntityState.Modified;
-                    //_context.Entry(userTask.User).State = EntityState.Detached;
-                    });
-                _context.TaskGroups.Add(taskGroup);
-                if (taskGroup.TaskGroupId > 0)
+            if(taskGroup.UserTasks != null) {
+                try
                 {
-                    _context.Entry(taskGroup).State = EntityState.Modified;
-
+                    taskGroup.UserTasks.ForEach(userTask => {
+                        _context.Entry(userTask).State = EntityState.Modified;
+                        //_context.Entry(userTask.User).State = EntityState.Detached;
+                    });
                 }
-                _context.SaveChanges();
+                catch (Exception ex)
+                {
+                    _context.UserTasks.RemoveRange(taskGroup.UserTasks);
+                    throw;
+                }
             }
-            catch (Exception ex)
+            _context.TaskGroups.Add(taskGroup);
+            if (taskGroup.TaskGroupId > 0)
             {
-                _context.UserTasks.RemoveRange(taskGroup.UserTasks); 
-                throw;
+                _context.Entry(taskGroup).State = EntityState.Modified;
+
             }
-            _logger.LogInformation("Saved Task Group " + taskGroup.TaskGroupId + " " + taskGroup.Name);
-            return taskGroup;
+            _context.SaveChanges();
+           return taskGroup;
         }
     }
 }
