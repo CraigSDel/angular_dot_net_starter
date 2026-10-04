@@ -11,12 +11,14 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure'
   },
-  webServer: {
-    command: 'dotnet run --project ../user-task-management.csproj --no-launch-profile --urls http://127.0.0.1:5000',
-    url: 'http://127.0.0.1:5000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-    env: { ASPNETCORE_ENVIRONMENT: process.env.ASPNETCORE_ENVIRONMENT ?? 'Development' }
-  },
+  ...(process.env.CI ? {} : {
+    webServer: {
+      command: 'dotnet run --project ../user-task-management.csproj --no-launch-profile --urls http://127.0.0.1:5000',
+      url: 'http://127.0.0.1:5000',
+      reuseExistingServer: true,
+      timeout: 120_000,
+      env: { ASPNETCORE_ENVIRONMENT: process.env.ASPNETCORE_ENVIRONMENT ?? 'Development' }
+    }
+  }),
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }]
 });
