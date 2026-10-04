@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { TaskGroup } from '../../shared/models/task-group';
 import { TaskGroupService } from '../../shared/services/task-group.service';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +19,7 @@ export class TaskGroupComponent implements OnInit {
   public userTasks: UserTask[] = [];
   taskGroupForm;
 
-  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder) {
+  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef) {
     this.taskGroupForm = this.formBuilder.group({
       taskGroupId: undefined,
       name: undefined,
@@ -34,6 +35,7 @@ export class TaskGroupComponent implements OnInit {
   getUserTasks() {
     this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
+      this.changeDetector.detectChanges();
     }, error => {
       this.error = 'Unable to load tasks.';
     });
@@ -42,6 +44,7 @@ export class TaskGroupComponent implements OnInit {
   getTaskGroups(): void {
     this.taskGroupService.getAll().subscribe(result => {
       this.taskGroups = result;
+      this.changeDetector.detectChanges();
     }, error => {
       this.error = 'Unable to load task groups.';
     });

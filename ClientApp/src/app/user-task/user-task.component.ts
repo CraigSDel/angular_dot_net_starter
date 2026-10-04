@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
@@ -20,7 +21,7 @@ export class UserTaskComponent implements OnInit {
 
   statuses = ['To-Do', 'In-Progress', 'Done'];
 
-  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
+  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, private datePipe: DatePipe, private changeDetector: ChangeDetectorRef) {
     this.userTaskForm = this.formBuilder.group({
       userTaskId: undefined,
       name: undefined,
@@ -38,12 +39,14 @@ export class UserTaskComponent implements OnInit {
   getUserTasks(): void {
     this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
+      this.changeDetector.detectChanges();
     }, error => { this.error = 'Unable to load tasks.'; console.error(error); });
   }
 
   getUsers(): void {
     this.userService.getAll().subscribe(result => {
       this.users = result;
+      this.changeDetector.detectChanges();
     }, error => { this.error = 'Unable to load users.'; console.error(error); });
   }
 

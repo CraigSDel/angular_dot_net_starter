@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../shared/models/user';
 import { UserService } from '../../shared/services/user.service';
@@ -15,7 +16,7 @@ export class UserComponent implements OnInit {
   public error = '';
   userForm;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef) {
     this.userForm = this.formBuilder.group({
       userId: undefined,
       firstName: undefined,
@@ -29,6 +30,7 @@ export class UserComponent implements OnInit {
     this.error = '';
     this.userService.getAll().subscribe(result => {
       this.users = result;
+      this.changeDetector.detectChanges();
     }, error => { this.error = error.status === 409 ? 'This user cannot be changed while tasks reference it.' : 'Unable to load users.'; });
   }
 

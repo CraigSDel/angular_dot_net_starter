@@ -47,10 +47,7 @@ terminal sessions. Node.js 26 is already available through Homebrew as
 ## Run locally
 
 ```bash
-cd ClientApp
-npm ci
-cd ..
-dotnet run --project user-task-management.csproj
+./start.sh
 ```
 
 The development app is available through the ASP.NET Core host. Configure the database with `ConnectionStrings:DefaultConnection`; the default is `Data Source=blog.db`. The database is disposable development data and can be recreated by deleting `blog.db` and starting the app with the fresh EF migration.
