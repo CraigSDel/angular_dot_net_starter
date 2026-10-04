@@ -91,6 +91,7 @@ export class UserTaskComponent implements OnInit {
       this.getUserTasks();
     }, error => {
       this.error = error.status === 409 ? 'This task cannot be deleted while it is in a group.' : 'Unable to delete the task.';
+      this.changeDetector.detectChanges();
     });
   }
 

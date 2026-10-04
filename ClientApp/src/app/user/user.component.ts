@@ -72,6 +72,7 @@ export class UserComponent implements OnInit {
       this.getUsers();
     }, error => {
       this.error = error.status === 409 ? 'Remove this user’s tasks before deleting the user.' : 'Unable to delete the user.';
+      this.changeDetector.detectChanges();
     });
   }
 

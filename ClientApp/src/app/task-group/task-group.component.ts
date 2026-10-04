@@ -72,6 +72,7 @@ export class TaskGroupComponent implements OnInit {
       this.getTaskGroups();
     }, error => {
         this.error = error.status === 409 ? 'Remove the group’s tasks before deleting the group.' : 'Unable to delete the task group.';
+        this.changeDetector.detectChanges();
     });
   }
 
