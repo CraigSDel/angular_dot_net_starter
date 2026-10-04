@@ -61,8 +61,25 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Testing
         run: |
+          export ConnectionStrings__DefaultConnection="Data Source=artifact/ci.db"
           nohup dotnet artifact/publish/user-task-management.dll --urls http://127.0.0.1:5000 > artifact/app.log 2>&1 &
-          curl --fail --retry 30 --retry-delay 2 http://127.0.0.1:5000/health
+          app_pid=$!
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:5000/health; then
+              echo
+              exit 0
+            fi
+            if ! kill -0 "$app_pid" 2>/dev/null; then
+              echo "Published application exited before becoming healthy."
+              cat artifact/app.log
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Published application did not become healthy within 60 seconds."
+          cat artifact/app.log
+          kill "$app_pid" 2>/dev/null || true
+          exit 1
 
       - name: Run Playwright tests
         working-directory: ClientApp
