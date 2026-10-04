@@ -32,6 +32,7 @@ async function deleteResource(request: APIRequestContext, path: string) {
 async function chooseMaterialOption(page: Page, label: string, option: string) {
   await page.getByRole('combobox', { name: label }).click();
   await page.getByRole('option', { name: option, exact: true }).click();
+  await page.keyboard.press('Escape');
 }
 
 test('renders the home page and navigates to every management screen', async ({ page }) => {
@@ -179,8 +180,16 @@ test('creates, edits, and deletes task groups through the UI', async ({ page, re
 
     const updatedRow = page.getByRole('row').filter({ hasText: updatedGroupName });
     await expect(updatedRow).toContainText(secondTask.name);
-    await updatedRow.getByRole('button', { name: 'Delete' }).click();
-    await expect(updatedRow).toHaveCount(0);
+    await updatedRow.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('combobox', { name: 'User Tasks' }).click();
+    await page.getByRole('option', { name: secondTask.name, exact: true }).click();
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.getByRole('row').filter({ hasText: updatedGroupName })).not.toContainText(secondTask.name);
+
+    const deletableRow = page.getByRole('row').filter({ hasText: updatedGroupName });
+    await deletableRow.getByRole('button', { name: 'Delete' }).click();
+    await expect(deletableRow).toHaveCount(0);
   } finally {
     const groups = await (await request.get('/api/v1/task-groups')).json() as Array<{ id: number; name: string }>;
     for (const group of groups.filter(item => item.name === groupName || item.name === updatedGroupName)) {
