@@ -4,5 +4,4 @@ export class  TaskGroup {
     taskGroupId?: number;
     name = '';
     userTasks: UserTask[] = [];
-    tasks?: UserTask[];
 }

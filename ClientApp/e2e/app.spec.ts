@@ -30,10 +30,13 @@ test('creates and deletes a user through the UI', async ({ page }) => {
 
 test('supports task and task-group CRUD through the published API and UI', async ({ page, request }) => {
   const userResponse = await request.post('/api/v1/users', { data: { firstName: `E2E-${Date.now()}`, lastName: 'Owner' } });
+  expect(userResponse.ok()).toBeTruthy();
   const user = await userResponse.json();
   const taskResponse = await request.post('/api/v1/tasks', { data: { name: 'E2E task', deadline: '2030-01-01T00:00:00Z', status: 'To-Do', userId: user.id } });
+  expect(taskResponse.ok()).toBeTruthy();
   const task = await taskResponse.json();
   const groupResponse = await request.post('/api/v1/task-groups', { data: { name: 'E2E group', taskIds: [task.id] } });
+  expect(groupResponse.ok()).toBeTruthy();
   const group = await groupResponse.json();
 
   await page.goto('/tasks');
@@ -41,8 +44,8 @@ test('supports task and task-group CRUD through the published API and UI', async
   await page.goto('/task-groups');
   await expect(page.getByRole('cell', { name: 'E2E group' })).toBeVisible();
 
-  await request.put(`/api/v1/task-groups/${group.id}`, { data: { name: 'E2E group', taskIds: [] } });
-  await request.delete(`/api/v1/task-groups/${group.id}`);
-  await request.delete(`/api/v1/tasks/${task.id}`);
-  await request.delete(`/api/v1/users/${user.id}`);
+  expect((await request.put(`/api/v1/task-groups/${group.id}`, { data: { name: 'E2E group', taskIds: [] } })).ok()).toBeTruthy();
+  expect((await request.delete(`/api/v1/task-groups/${group.id}`)).ok()).toBeTruthy();
+  expect((await request.delete(`/api/v1/tasks/${task.id}`)).ok()).toBeTruthy();
+  expect((await request.delete(`/api/v1/users/${user.id}`)).ok()).toBeTruthy();
 });

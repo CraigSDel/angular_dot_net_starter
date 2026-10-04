@@ -16,22 +16,14 @@ public sealed class TaskGroupController(ITaskGroupService service) : ControllerB
     [HttpPost]
     public async Task<ActionResult<TaskGroupDto>> Create(CreateTaskGroupRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var group = await service.CreateAsync(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = group.Id }, group);
-        }
-        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
+        var group = await service.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = group.Id }, group);
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult<TaskGroupDto>> Update(int id, UpdateTaskGroupRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return (await service.UpdateAsync(id, request, cancellationToken)) is { } group ? Ok(group) : NotFound();
-        }
-        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
+        return (await service.UpdateAsync(id, request, cancellationToken)) is { } group ? Ok(group) : NotFound();
     }
 
     [HttpDelete("{id:int}")]

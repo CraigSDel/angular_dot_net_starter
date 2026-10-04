@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TaskGroup } from '../models/task-group';
+import { ApiTaskGroup } from '../api-types';
 
-type ApiTask = { id: number; name: string; deadline: string; status: string; userId: number; taskGroupId?: number };
-type ApiGroup = { id: number; name: string; tasks?: ApiTask[] };
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +18,7 @@ export class TaskGroupService {
   }
 
   public getAll(sort?: 'name' | 'taskCount'): Observable<TaskGroup[]> {
-    return this.http.get<ApiGroup[]>('/api/v1/task-groups', { params: sort ? { sort } : {} }).pipe(
+    return this.http.get<ApiTaskGroup[]>('/api/v1/task-groups', { params: sort ? { sort } : {} }).pipe(
       map(groups => groups.map(group => this.mapGroup(group)))
     );
   }
@@ -35,11 +34,11 @@ export class TaskGroupService {
   public save(taskGroup: TaskGroup): Observable<TaskGroup> {
     const request = { name: taskGroup.name, taskIds: (taskGroup.userTasks ?? []).map(task => task.userTaskId) };
     return taskGroup.taskGroupId
-      ? this.http.put<ApiGroup>(`/api/v1/task-groups/${taskGroup.taskGroupId}`, request).pipe(map(group => this.mapGroup(group)))
-      : this.http.post<ApiGroup>('/api/v1/task-groups', request).pipe(map(group => this.mapGroup(group)));
+      ? this.http.put<ApiTaskGroup>(`/api/v1/task-groups/${taskGroup.taskGroupId}`, request).pipe(map(group => this.mapGroup(group)))
+      : this.http.post<ApiTaskGroup>('/api/v1/task-groups', request).pipe(map(group => this.mapGroup(group)));
   }
 
-  private mapGroup(group: ApiGroup): TaskGroup {
+  private mapGroup(group: ApiTaskGroup): TaskGroup {
     return {
       taskGroupId: group.id,
       name: group.name,

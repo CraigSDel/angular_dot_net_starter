@@ -16,22 +16,14 @@ public sealed class UserTaskController(IUserTaskService service) : ControllerBas
     [HttpPost]
     public async Task<ActionResult<UserTaskDto>> Create(CreateUserTaskRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var task = await service.CreateAsync(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id = task.Id }, task);
-        }
-        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
+        var task = await service.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = task.Id }, task);
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult<UserTaskDto>> Update(int id, UpdateUserTaskRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            return (await service.UpdateAsync(id, request, cancellationToken)) is { } task ? Ok(task) : NotFound();
-        }
-        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
+        return (await service.UpdateAsync(id, request, cancellationToken)) is { } task ? Ok(task) : NotFound();
     }
 
     [HttpDelete("{id:int}")]

@@ -6,8 +6,7 @@ namespace my_new_app.Service;
 
 public sealed class TaskGroupServiceImpl(UserDataContext context) : ITaskGroupService
 {
-    private static UserTaskDto MapTask(UserTask task) => new(task.UserTaskId, task.Name, task.Deadline, task.Status, task.UserId, task.TaskGroupId);
-    private static TaskGroupDto Map(TaskGroup group) => new(group.TaskGroupId, group.Name, group.UserTasks.OrderBy(task => task.Deadline).Select(MapTask).ToList());
+    private static TaskGroupDto Map(TaskGroup group) => new(group.TaskGroupId, group.Name, group.UserTasks.OrderBy(task => task.Deadline).Select(ApiMapper.ToDto).ToList());
 
     public async Task<IReadOnlyList<TaskGroupDto>> GetAllAsync(string? sort, CancellationToken cancellationToken)
     {
@@ -63,7 +62,7 @@ public sealed class TaskGroupServiceImpl(UserDataContext context) : ITaskGroupSe
     {
         var distinctIds = taskIds.Distinct().ToArray();
         var tasks = await context.UserTasks.Where(task => distinctIds.Contains(task.UserTaskId)).ToListAsync(cancellationToken);
-        if (tasks.Count != distinctIds.Length) throw new ArgumentException("One or more TaskIds do not exist.");
+        if (tasks.Count != distinctIds.Length) throw new InvalidReferenceException("One or more TaskIds do not exist.");
         foreach (var task in group.UserTasks) task.TaskGroupId = null;
         group.UserTasks.Clear();
         foreach (var task in tasks) { task.TaskGroupId = group.TaskGroupId == 0 ? null : group.TaskGroupId; group.UserTasks.Add(task); }

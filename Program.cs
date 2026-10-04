@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.AspNetCore.SpaServices.Extensions;
 using Microsoft.EntityFrameworkCore;
+using my_new_app.Controllers;
 using my_new_app.Model;
 using my_new_app.Service;
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<UserDataContext>(options => options.UseSqlite(conn
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<IUserTaskService, UserTaskServiceImpl>();
 builder.Services.AddScoped<ITaskGroupService, TaskGroupServiceImpl>();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilter>());
 builder.Services.AddHealthChecks();
 builder.Services.AddSpaStaticFiles(options => options.RootPath = "ClientApp/dist");
 

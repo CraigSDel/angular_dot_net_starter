@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../shared/models/user';
@@ -10,8 +10,8 @@ import { FormBuilder } from '@angular/forms';
   imports: [NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './user.component.html'
 })
-export class UserComponent {
-  public users: User[];
+export class UserComponent implements OnInit {
+  public users: User[] = [];
   public error = '';
   userForm;
 
@@ -21,8 +21,9 @@ export class UserComponent {
       firstName: undefined,
       lastName: undefined
     });
-    this.getUsers();
   }
+
+  ngOnInit(): void { this.getUsers(); }
 
   getUsers(): void {
     this.error = '';
@@ -59,11 +60,11 @@ export class UserComponent {
     });
   }
 
-  edit(userTask) {
+  edit(user: User): void {
     this.userForm = this.formBuilder.group({
-      userId: userTask.userId,
-      firstName: userTask.firstName,
-      lastName: userTask.lastName
+      userId: user.userId,
+      firstName: user.firstName,
+      lastName: user.lastName
     });
   }
 }

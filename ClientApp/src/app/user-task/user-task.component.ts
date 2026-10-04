@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor, DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
@@ -12,9 +12,9 @@ import { UserService } from '../../shared/services/user.service';
   templateUrl: './user-task.component.html',
   providers: [DatePipe]  
 })
-export class UserTaskComponent {
-  public userTasks: UserTask[];
-  public users: User[];
+export class UserTaskComponent implements OnInit {
+  public userTasks: UserTask[] = [];
+  public users: User[] = [];
   public error = '';
   userTaskForm;
 
@@ -28,6 +28,9 @@ export class UserTaskComponent {
       userId: undefined,
       status: undefined
     });
+  }
+
+  ngOnInit(): void {
     this.getUsers();
     this.getUserTasks();
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { TaskGroup } from '../../shared/models/task-group';
 import { TaskGroupService } from '../../shared/services/task-group.service';
@@ -12,20 +12,23 @@ import { UserTask } from '../../shared/models/user-task';
   templateUrl: './task-group.component.html',
   styleUrls: ['./task-group.css']
 })
-export class TaskGroupComponent {
-  public taskGroups: TaskGroup[];
+export class TaskGroupComponent implements OnInit {
+  public taskGroups: TaskGroup[] = [];
   public error = '';
-  private userTasks: UserTask[];
+  public userTasks: UserTask[] = [];
   taskGroupForm;
 
   constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder) {
-    this.getTaskGroups();
-    this.getUserTasks();
     this.taskGroupForm = this.formBuilder.group({
       taskGroupId: undefined,
       name: undefined,
-      userTasks: new FormControl(this.userTasks)
+      userTasks: new FormControl<UserTask[]>([])
     });
+  }
+
+  ngOnInit(): void {
+    this.getTaskGroups();
+    this.getUserTasks();
   }
 
   getUserTasks() {
@@ -56,7 +59,7 @@ export class TaskGroupComponent {
     this.taskGroupForm = this.formBuilder.group({
       taskGroupId: taskGroup.taskGroupId,
       name: taskGroup.name,
-      userTasks: new FormControl(taskGroup.userTasks)
+      userTasks: new FormControl<UserTask[]>(taskGroup.userTasks)
     });
   }
 
