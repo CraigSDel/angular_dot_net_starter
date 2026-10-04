@@ -58,6 +58,7 @@ export class UserComponent implements OnInit {
     },
       error => {
         this.error = error.status === 400 ? 'Enter a first and last name.' : 'Unable to save the user.';
+        this.changeDetector.detectChanges();
       }
     );
   }
