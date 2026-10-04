@@ -61,8 +61,10 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Testing
         run: |
-          export ConnectionStrings__DefaultConnection="Data Source=artifact/ci.db"
-          nohup dotnet artifact/publish/user-task-management.dll --urls http://127.0.0.1:5000 > artifact/app.log 2>&1 &
+          export ConnectionStrings__DefaultConnection="Data Source=$GITHUB_WORKSPACE/artifact/ci.db"
+          nohup dotnet artifact/publish/user-task-management.dll \
+            --contentRoot "$GITHUB_WORKSPACE/artifact/publish" \
+            --urls http://127.0.0.1:5000 > artifact/app.log 2>&1 &
           app_pid=$!
           for attempt in {1..30}; do
             if curl --fail --silent http://127.0.0.1:5000/health; then
