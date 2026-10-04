@@ -1,46 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using my_new_app.Model;
+using my_new_app.Contracts;
 using my_new_app.Service;
 
-namespace my_new_app.Controllers
+namespace my_new_app.Controllers;
+
+[ApiController, Route("api/v1/users")]
+public sealed class UserController(IUserService service) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class UserController : Controller
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<UserDto>>> GetAll(CancellationToken cancellationToken) => Ok(await service.GetAllAsync(cancellationToken));
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<UserDto>> Get(int id, CancellationToken cancellationToken) => (await service.GetAsync(id, cancellationToken)) is { } user ? Ok(user) : NotFound();
+
+    [HttpPost]
+    public async Task<ActionResult<UserDto>> Create(CreateUserRequest request, CancellationToken cancellationToken)
     {
-
-        private IUserService _userService;
-
-        public UserController(ILogger<UserController> logger, IUserService userService)
-        {
-            _logger = logger;
-            _userService = userService;
-        }
-
-        private readonly ILogger<UserController> _logger;
-
-        [HttpGet]
-        public List<User> Get()
-        {
-            return _userService.GetAll();
-        }
-
-        [HttpPost]
-        public User Save([FromBody] User user)
-        {
-            return _userService.Save(user);
-        }
-
-        [HttpPost]
-        [Route("Delete")]
-        public Boolean Delete([FromBody] User user)
-        {
-            return _userService.Delete(user);
-        }
+        var user = await service.CreateAsync(request, cancellationToken);
+        return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<UserDto>> Update(int id, UpdateUserRequest request, CancellationToken cancellationToken) => (await service.UpdateAsync(id, request, cancellationToken)) is { } user ? Ok(user) : NotFound();
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken) => (await service.DeleteAsync(id, cancellationToken)) switch
+    {
+        DeleteResult.Deleted => NoContent(),
+        DeleteResult.NotFound => NotFound(),
+        _ => Conflict(new ProblemDetails { Title = "User is in use", Detail = "Remove the user's tasks before deleting the user." })
+    };
 }

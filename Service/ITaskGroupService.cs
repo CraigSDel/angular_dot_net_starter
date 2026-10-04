@@ -1,22 +1,12 @@
-﻿using my_new_app.Model;
-using System;
-using System.Collections.Generic;
+using my_new_app.Contracts;
 
-namespace my_new_app.Service
+namespace my_new_app.Service;
+
+public interface ITaskGroupService
 {
-    public interface ITaskGroupService
-    {  
-
-        TaskGroup Get(int id);
-    
-        List<TaskGroup> GetAll();
-
-        TaskGroup Save(TaskGroup taskGroup);
-
-        Boolean Delete(TaskGroup taskGroup);
-
-        List<TaskGroup> GetAllOrderByName();
-
-        List<TaskGroup> GetAllOrderByTaskCount();
-    }
+    Task<IReadOnlyList<TaskGroupDto>> GetAllAsync(string? sort, CancellationToken cancellationToken);
+    Task<TaskGroupDto?> GetAsync(int id, CancellationToken cancellationToken);
+    Task<TaskGroupDto> CreateAsync(CreateTaskGroupRequest request, CancellationToken cancellationToken);
+    Task<TaskGroupDto?> UpdateAsync(int id, UpdateTaskGroupRequest request, CancellationToken cancellationToken);
+    Task<DeleteResult> DeleteAsync(int id, CancellationToken cancellationToken);
 }

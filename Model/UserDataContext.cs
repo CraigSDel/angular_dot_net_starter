@@ -1,26 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace my_new_app.Model
+namespace my_new_app.Model;
+
+public sealed class UserDataContext(DbContextOptions<UserDataContext> options) : DbContext(options)
 {
-    public class UserDataContext : DbContext
+    public DbSet<User> Users => Set<User>();
+    public DbSet<UserTask> UserTasks => Set<UserTask>();
+    public DbSet<TaskGroup> TaskGroups => Set<TaskGroup>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        public UserDataContext(DbContextOptions<UserDataContext> options)
-         : base(options)
-        { }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserTask>()
-                .HasOne(u => u.User)
-                .WithMany()
-                .HasForeignKey(u => u.UserId);      
-        }
-
-        public DbSet<User> Users { get; set; }
-
-        public DbSet<UserTask> UserTasks { get; set; }
-
-        public DbSet<TaskGroup> TaskGroups { get; set; }
+        modelBuilder.Entity<UserTask>().HasOne(task => task.User).WithMany(user => user.UserTasks)
+            .HasForeignKey(task => task.UserId).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<UserTask>().HasOne(task => task.TaskGroup).WithMany(group => group.UserTasks)
+            .HasForeignKey(task => task.TaskGroupId).OnDelete(DeleteBehavior.SetNull);
     }
 }

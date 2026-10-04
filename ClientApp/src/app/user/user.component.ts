@@ -1,17 +1,21 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../shared/models/user';
 import { UserService } from '../../shared/services/user.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
+  imports: [NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './user.component.html'
 })
 export class UserComponent {
   public users: User[];
+  public error = '';
   userForm;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
       userId: undefined,
       firstName: undefined,
@@ -21,22 +25,23 @@ export class UserComponent {
   }
 
   getUsers(): void {
-    this.userService.getAll(this.baseUrl).subscribe(result => {
+    this.error = '';
+    this.userService.getAll().subscribe(result => {
       this.users = result;
-    }, error => console.error(error));
+    }, error => { this.error = error.status === 409 ? 'This user cannot be changed while tasks reference it.' : 'Unable to load users.'; });
   }
 
   onSubmit(userData) {
     const user = new User();
-    user.UserId = userData.userId;
-    user.FirstName = userData.firstName;
-    user.LastName = userData.lastName;
-    this.userService.save(user).subscribe(data => {
+    user.userId = userData.userId;
+    user.firstName = userData.firstName;
+    user.lastName = userData.lastName;
+    const request = user.userId ? this.userService.update(user) : this.userService.save(user);
+    request.subscribe(() => {
       this.userForm.reset();
       this.getUsers();
     },
-      error => {
-        console.log(error);
+      () => {
         this.userForm.reset();
       }
     );
@@ -50,7 +55,7 @@ export class UserComponent {
     this.userService.delete(user).subscribe(result => {
       this.getUsers();
     }, error => {
-      console.error(error);
+      this.error = error.status === 409 ? 'Remove this user’s tasks before deleting the user.' : 'Unable to delete the user.';
     });
   }
 

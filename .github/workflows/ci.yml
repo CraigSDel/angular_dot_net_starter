@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+          cache-dependency-path: ClientApp/package-lock.json
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+
+      - name: Install frontend dependencies
+        working-directory: ClientApp
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: ClientApp
+        run: npx playwright install --with-deps chromium
+
+      - name: Lint frontend
+        working-directory: ClientApp
+        run: npm run lint
+
+      - name: Run frontend unit tests
+        working-directory: ClientApp
+        run: npm test -- --no-progress
+
+      - name: Build frontend
+        working-directory: ClientApp
+        env:
+          NG_BUILD_MAX_WORKERS: 1
+        run: npm run build -- --configuration production
+
+      - name: Restore backend
+        run: dotnet restore UserTaskManagement.sln
+
+      - name: Build backend
+        run: dotnet build UserTaskManagement.sln --configuration Release --no-restore
+
+      - name: Run backend tests
+        run: dotnet test UserTaskManagement.sln --configuration Release --no-build --logger trx --results-directory TestResults
+
+      - name: Publish application
+        run: dotnet publish user-task-management.csproj --configuration Release --no-restore --output artifact/publish -p:SkipClientBuild=true
+
+      - name: Start published application
+        env:
+          ASPNETCORE_ENVIRONMENT: Testing
+        run: |
+          nohup dotnet artifact/publish/user-task-management.dll --urls http://127.0.0.1:5000 > artifact/app.log 2>&1 &
+          curl --fail --retry 30 --retry-delay 2 http://127.0.0.1:5000/health
+
+      - name: Run Playwright tests
+        working-directory: ClientApp
+        env:
+          ASPNETCORE_ENVIRONMENT: Testing
+          BASE_URL: http://127.0.0.1:5000
+        run: npm run e2e
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            TestResults
+            artifact
+            ClientApp/playwright-report
+            ClientApp/test-results

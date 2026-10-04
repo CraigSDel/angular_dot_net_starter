@@ -1,63 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using my_new_app.Contracts;
 using my_new_app.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace my_new_app.Service
+namespace my_new_app.Service;
+
+public sealed class UserServiceImpl(UserDataContext context) : IUserService
 {
-    public class UserServiceImpl : IUserService
+    public async Task<IReadOnlyList<UserDto>> GetAllAsync(CancellationToken cancellationToken) =>
+        await context.Users.AsNoTracking().OrderBy(user => user.LastName).ThenBy(user => user.FirstName)
+            .Select(user => new UserDto(user.UserId, user.FirstName, user.LastName)).ToListAsync(cancellationToken);
+
+    public async Task<UserDto?> GetAsync(int id, CancellationToken cancellationToken) =>
+        await context.Users.AsNoTracking().Where(user => user.UserId == id)
+            .Select(user => new UserDto(user.UserId, user.FirstName, user.LastName)).SingleOrDefaultAsync(cancellationToken);
+
+    public async Task<UserDto> CreateAsync(CreateUserRequest request, CancellationToken cancellationToken)
     {
+        var user = new User { FirstName = request.FirstName.Trim(), LastName = request.LastName.Trim() };
+        context.Users.Add(user);
+        await context.SaveChangesAsync(cancellationToken);
+        return new UserDto(user.UserId, user.FirstName, user.LastName);
+    }
 
-        private readonly ILogger<UserServiceImpl> _logger;
+    public async Task<UserDto?> UpdateAsync(int id, UpdateUserRequest request, CancellationToken cancellationToken)
+    {
+        var user = await context.Users.SingleOrDefaultAsync(item => item.UserId == id, cancellationToken);
+        if (user is null) return null;
+        user.FirstName = request.FirstName.Trim();
+        user.LastName = request.LastName.Trim();
+        await context.SaveChangesAsync(cancellationToken);
+        return new UserDto(user.UserId, user.FirstName, user.LastName);
+    }
 
-        private UserDataContext _context;
-
-        public UserServiceImpl() { }
-
-        public UserServiceImpl(ILogger<UserServiceImpl> logger, UserDataContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
-
-        public Boolean Delete(User user)
-        {
-            _context.Users.Remove(user);
-            _context.SaveChanges();
-            _logger.LogInformation("Delete Task Group " + user.UserId + " " + user.FirstName);
-            return true;
-        }
-
-        public User Get(int id)
-        {
-            var user = from u in _context.Users where u.UserId == id select u;
-            if (user.Count() == 1)
-            {
-                return user.First();
-            }
-            return null;
-        }
-
-        public List<User> GetAll()
-        {
-            return _context.Users.ToList();
-        }
-
-
-        public User Save(User user)
-        {
-            _context.Users.Add(user);
-            if (user.UserId > 0)
-            {
-                _context.Entry(user).State = EntityState.Modified;
-
-            }
-            _context.SaveChanges();
-            _logger.LogInformation("Saved Task Group " + user.UserId + " " + user.FirstName);
-            return user;
-        }
+    public async Task<DeleteResult> DeleteAsync(int id, CancellationToken cancellationToken)
+    {
+        var user = await context.Users.Include(item => item.UserTasks).SingleOrDefaultAsync(item => item.UserId == id, cancellationToken);
+        if (user is null) return DeleteResult.NotFound;
+        if (user.UserTasks.Count != 0) return DeleteResult.Conflict;
+        context.Users.Remove(user);
+        await context.SaveChangesAsync(cancellationToken);
+        return DeleteResult.Deleted;
     }
 }

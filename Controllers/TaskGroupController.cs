@@ -1,60 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using my_new_app.Model;
+using my_new_app.Contracts;
 using my_new_app.Service;
 
-namespace my_new_app.Controllers
+namespace my_new_app.Controllers;
+
+[ApiController, Route("api/v1/task-groups")]
+public sealed class TaskGroupController(ITaskGroupService service) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class TaskGroupController : Controller
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<TaskGroupDto>>> GetAll([FromQuery] string? sort, CancellationToken cancellationToken) => Ok(await service.GetAllAsync(sort, cancellationToken));
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<TaskGroupDto>> Get(int id, CancellationToken cancellationToken) => (await service.GetAsync(id, cancellationToken)) is { } group ? Ok(group) : NotFound();
+
+    [HttpPost]
+    public async Task<ActionResult<TaskGroupDto>> Create(CreateTaskGroupRequest request, CancellationToken cancellationToken)
     {
-        private ITaskGroupService _taskGroupService;
-
-        public TaskGroupController(ILogger<TaskGroupController> logger, ITaskGroupService taskGroupService)
+        try
         {
-            _logger = logger;
-            _taskGroupService = taskGroupService;
+            var group = await service.CreateAsync(request, cancellationToken);
+            return CreatedAtAction(nameof(Get), new { id = group.Id }, group);
         }
-
-        private readonly ILogger<TaskGroupController> _logger;
-
-        [HttpGet]
-        public List<TaskGroup> Get()
-        {
-            return _taskGroupService.GetAll();
-        }
-
-        [HttpGet]
-        [Route("GetAllOrderByName")]
-        public List<TaskGroup> GetAllOrderByName()
-        {
-            return _taskGroupService.GetAllOrderByName();
-        }
-
-        [HttpGet]
-        [Route("GetAllOrderByTaskCount")]
-        public List<TaskGroup> GetAllOrderByTaskCount()
-        {
-            return _taskGroupService.GetAllOrderByTaskCount();
-        }
-
-        [HttpPost]
-        public TaskGroup Save([FromBody] TaskGroup taskGroup)
-        {
-            return _taskGroupService.Save(taskGroup);
-        }
-       
-        [HttpPost]
-        [Route("Delete")]
-        public Boolean Delete([FromBody] TaskGroup taskGroup)
-        {
-            return _taskGroupService.Delete(taskGroup);
-        }
+        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<TaskGroupDto>> Update(int id, UpdateTaskGroupRequest request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return (await service.UpdateAsync(id, request, cancellationToken)) is { } group ? Ok(group) : NotFound();
+        }
+        catch (ArgumentException exception) { return BadRequest(new ProblemDetails { Title = "Invalid reference", Detail = exception.Message }); }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken) => (await service.DeleteAsync(id, cancellationToken)) switch
+    {
+        DeleteResult.Deleted => NoContent(),
+        DeleteResult.NotFound => NotFound(),
+        _ => Conflict(new ProblemDetails { Title = "Task group is in use", Detail = "Remove the group's tasks before deleting the task group." })
+    };
 }

@@ -1,18 +1,12 @@
-﻿using my_new_app.Model;
-using System;
-using System.Collections.Generic;
+using my_new_app.Contracts;
 
-namespace my_new_app.Service
+namespace my_new_app.Service;
+
+public interface IUserTaskService
 {
-    public interface IUserTaskService
-    {  
-
-        UserTask Get(int id);
-    
-        List<UserTask> GetAll();
-
-        UserTask Save(UserTask taskGroup);
-
-        Boolean Delete(UserTask taskGroup);
-    }
+    Task<IReadOnlyList<UserTaskDto>> GetAllAsync(CancellationToken cancellationToken);
+    Task<UserTaskDto?> GetAsync(int id, CancellationToken cancellationToken);
+    Task<UserTaskDto> CreateAsync(CreateUserTaskRequest request, CancellationToken cancellationToken);
+    Task<UserTaskDto?> UpdateAsync(int id, UpdateUserTaskRequest request, CancellationToken cancellationToken);
+    Task<DeleteResult> DeleteAsync(int id, CancellationToken cancellationToken);
 }

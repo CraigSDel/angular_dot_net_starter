@@ -1,29 +1,31 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component } from '@angular/core';
+import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
 import { User } from '../../shared/models/user';
 import { UserService } from '../../shared/services/user.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-task',
+  imports: [NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './user-task.component.html',
   providers: [DatePipe]  
 })
 export class UserTaskComponent {
   public userTasks: UserTask[];
   public users: User[];
+  public error = '';
   userTaskForm;
 
   statuses = ['To-Do', 'In-Progress', 'Done'];
 
-  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private datePipe: DatePipe) {
+  constructor(private userTaskService: UserTaskService, private userService: UserService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
     this.userTaskForm = this.formBuilder.group({
       userTaskId: undefined,
       name: undefined,
       deadline: undefined,
-      user: undefined,
+      userId: undefined,
       status: undefined
     });
     this.getUsers();
@@ -31,24 +33,24 @@ export class UserTaskComponent {
   }
 
   getUserTasks(): void {
-    this.userTaskService.getAll(this.baseUrl).subscribe(result => {
+    this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
-    }, error => console.error(error));
+    }, error => { this.error = 'Unable to load tasks.'; console.error(error); });
   }
 
   getUsers(): void {
-    this.userService.getAll(this.baseUrl).subscribe(result => {
+    this.userService.getAll().subscribe(result => {
       this.users = result;
-    }, error => console.error(error));
+    }, error => { this.error = 'Unable to load users.'; console.error(error); });
   }
 
   onSubmit(userData) {
     const userTask = new UserTask();
-    userTask.UserTaskId = userData.userTaskId;
-    userTask.Name = userData.name;
-    userTask.User = userData.user;
-    userTask.Deadline = userData.deadline;
-    userTask.Status = userData.status;
+    userTask.userTaskId = userData.userTaskId;
+    userTask.name = userData.name;
+    userTask.userId = userData.userId;
+    userTask.deadline = userData.deadline;
+    userTask.status = userData.status;
     this.userTaskService.save(userTask).subscribe(data => {
       console.log('Saved User ' + data);
       this.userTaskForm.reset();
@@ -56,6 +58,7 @@ export class UserTaskComponent {
       this.getUserTasks();
     },
       error => {
+        this.error = error.status === 400 ? 'Check the selected user and task group.' : 'Unable to save the task.';
         console.log(error);
         this.userTaskForm.reset();
       }
@@ -66,7 +69,7 @@ export class UserTaskComponent {
     this.userTaskService.delete(userTask).subscribe(result => {
       this.getUserTasks();
     }, error => {
-      console.error(error);
+      this.error = error.status === 409 ? 'This task cannot be deleted while it is in a group.' : 'Unable to delete the task.';
     });
   }
 
@@ -75,7 +78,7 @@ export class UserTaskComponent {
       userTaskId: userTask.userTaskId,
       name: userTask.name,
       deadline: this.datePipe.transform(new Date(userTask.deadline), 'yyyy-MM-dd'),
-      user: userTask.user,
+      userId: userTask.userId,
       status: userTask.status
     });
   }
@@ -85,6 +88,6 @@ export class UserTaskComponent {
   }
 
   public CompareUser(Param1: User, Param2: User): boolean {
-    return Param1 && Param2 ? Param1.UserId === Param2.UserId : false;
+    return Param1 && Param2 ? Param1.userId === Param2.userId : false;
   }
 }

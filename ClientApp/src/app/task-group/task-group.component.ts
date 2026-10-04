@@ -1,22 +1,24 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
 import { TaskGroup } from '../../shared/models/task-group';
 import { TaskGroupService } from '../../shared/services/task-group.service';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { User } from '../../shared/models/user';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
 
 @Component({
   selector: 'app-task-group',
+  imports: [NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './task-group.component.html',
   styleUrls: ['./task-group.css']
 })
 export class TaskGroupComponent {
   public taskGroups: TaskGroup[];
+  public error = '';
   private userTasks: UserTask[];
   taskGroupForm;
 
-  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder) {
     this.getTaskGroups();
     this.getUserTasks();
     this.taskGroupForm = this.formBuilder.group({
@@ -27,18 +29,18 @@ export class TaskGroupComponent {
   }
 
   getUserTasks() {
-    this.userTaskService.getAll(this.baseUrl).subscribe(result => {
+    this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
     }, error => {
-      console.error(error)
+      this.error = 'Unable to load tasks.';
     });
   }
 
   getTaskGroups(): void {
-    this.taskGroupService.getAll(this.baseUrl).subscribe(result => {
+    this.taskGroupService.getAll().subscribe(result => {
       this.taskGroups = result;
     }, error => {
-      console.error(error)
+      this.error = 'Unable to load task groups.';
     });
   }
 
@@ -46,7 +48,7 @@ export class TaskGroupComponent {
     this.taskGroupService.delete(taskGroup).subscribe(result => {
       this.getTaskGroups();
     }, error => {
-        console.error(error);
+        this.error = error.status === 409 ? 'Remove the group’s tasks before deleting the group.' : 'Unable to delete the task group.';
     });
   }
 
@@ -64,22 +66,22 @@ export class TaskGroupComponent {
 
   onSubmit(taskGroupData) {
     const taskGroup = new TaskGroup();
-    taskGroup.TaskGroupId = taskGroupData.taskGroupId;
-    taskGroup.Name = taskGroupData.name;
-    taskGroup.UserTasks = taskGroupData.userTasks;
+    taskGroup.taskGroupId = taskGroupData.taskGroupId;
+    taskGroup.name = taskGroupData.name;
+    taskGroup.userTasks = taskGroupData.userTasks;
     this.taskGroupService.save(taskGroup).subscribe(data => {
       this.taskGroupForm.reset();
       this.getTaskGroups();
       this.getUserTasks();
     },
       error => {
-        console.log(error);
+        this.error = error.status === 400 ? 'Select valid tasks for the group.' : 'Unable to save the task group.';
         this.taskGroupForm.reset();
       }
     );
   }
 
   public CompareUserTask(Param1: UserTask, Param2: UserTask): boolean {
-    return Param1 && Param2 ? Param1.UserTaskId === Param2.UserTaskId : false;
+    return Param1 && Param2 ? Param1.userTaskId === Param2.userTaskId : false;
   }
 }

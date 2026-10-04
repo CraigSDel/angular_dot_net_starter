@@ -1,14 +1,16 @@
 <div class="row">
   <div class="col-12">
-    <h1 id="tableLabel">Users Tasks</h1>
+    <h1 id="tableLabel">Tasks</h1>
   </div>
 </div>
+<p class="alert alert-danger" *ngIf="error">{{ error }}</p>
 <div class="row">
   <div class="col-sm-12 col-md-6">
 
     <p *ngIf="!userTasks"><em>Loading...</em></p>
 
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="userTasks">
+    <p *ngIf="userTasks && userTasks.length === 0"><em>No tasks yet.</em></p>
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="userTasks?.length">
       <thead>
         <tr>
           <th>ID</th>
@@ -50,8 +52,8 @@
         <label for="user ">
           User
         </label>
-        <select class="float-right" formControlName="user" [compareWith]="CompareUser" size="1">
-          <option *ngFor="let user of users" [ngValue]="user">
+        <select class="float-right" formControlName="userId" size="1">
+          <option *ngFor="let user of users" [ngValue]="user.userId">
             {{ user.firstName }} {{ user.lastName }}
           </option>
         </select>
