@@ -1,18 +1,9 @@
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
+.app-shell { height: 4rem; min-height: 4rem; background: transparent; }
+.app-sidenav { width: 16rem; border-right: 1px solid var(--portal-border); background: var(--portal-surface); }
+.sidenav-brand { display: flex; align-items: center; gap: .75rem; height: 4rem; padding: 0 1.25rem; color: var(--portal-primary-dark); font-size: 1.05rem; font-weight: 700; }
+.sidenav-brand mat-icon, .active-nav mat-icon { color: var(--portal-primary); }
+.active-nav { color: var(--portal-primary-dark) !important; background: var(--portal-primary-soft) !important; font-weight: 700; }
+.app-toolbar { position: sticky; top: 0; z-index: 2; min-height: 4rem; padding: 0 1.5rem; color: var(--portal-text); background: var(--portal-surface); border-bottom: 1px solid var(--portal-border); box-shadow: 0 2px 8px rgba(79, 25, 43, .06); }
+.toolbar-title { color: inherit; font-size: 1.05rem; font-weight: 700; text-decoration: none; }
+.mobile-menu-button { display: none; margin-right: .5rem; }
+@media (max-width: 767px) { .app-sidenav { width: min(17rem, 85vw); } .mobile-menu-button { display: inline-flex; } }

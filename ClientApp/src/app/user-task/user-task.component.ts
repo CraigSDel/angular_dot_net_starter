@@ -6,10 +6,18 @@ import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
 import { User } from '../../shared/models/user';
 import { UserService } from '../../shared/services/user.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-user-task',
-  imports: [NgIf, NgFor, ReactiveFormsModule],
+  imports: [NgIf, NgFor, DatePipe, ReactiveFormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, MatSelectModule, MatTableModule],
   templateUrl: './user-task.component.html',
   providers: [DatePipe]  
 })
@@ -17,6 +25,9 @@ export class UserTaskComponent implements OnInit {
   public userTasks: UserTask[] = [];
   public users: User[] = [];
   public error = '';
+  public isLoading = false;
+  public isLoadingUsers = false;
+  readonly displayedColumns = ['userTaskId', 'name', 'deadline', 'status', 'actions'];
   userTaskForm;
 
   statuses = ['To-Do', 'In-Progress', 'Done'];
@@ -37,17 +48,21 @@ export class UserTaskComponent implements OnInit {
   }
 
   getUserTasks(): void {
+    this.isLoading = true;
     this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
+      this.isLoading = false;
       this.changeDetector.detectChanges();
-    }, error => { this.error = 'Unable to load tasks.'; console.error(error); });
+    }, error => { this.isLoading = false; this.error = 'Unable to load tasks.'; console.error(error); });
   }
 
   getUsers(): void {
+    this.isLoadingUsers = true;
     this.userService.getAll().subscribe(result => {
       this.users = result;
+      this.isLoadingUsers = false;
       this.changeDetector.detectChanges();
-    }, error => { this.error = 'Unable to load users.'; console.error(error); });
+    }, error => { this.isLoadingUsers = false; this.error = 'Unable to load users.'; console.error(error); });
   }
 
   onSubmit(userData) {

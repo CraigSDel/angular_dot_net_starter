@@ -6,10 +6,18 @@ import { TaskGroupService } from '../../shared/services/task-group.service';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserTaskService } from '../../shared/services/user-task.service';
 import { UserTask } from '../../shared/models/user-task';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-task-group',
-  imports: [NgIf, NgFor, ReactiveFormsModule],
+  imports: [NgIf, NgFor, ReactiveFormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressSpinnerModule, MatSelectModule, MatTableModule],
   templateUrl: './task-group.component.html',
   styleUrls: ['./task-group.css']
 })
@@ -17,6 +25,9 @@ export class TaskGroupComponent implements OnInit {
   public taskGroups: TaskGroup[] = [];
   public error = '';
   public userTasks: UserTask[] = [];
+  public isLoading = false;
+  public isLoadingTasks = false;
+  readonly displayedColumns = ['taskGroupId', 'name', 'userTasks', 'actions'];
   taskGroupForm;
 
   constructor(private taskGroupService: TaskGroupService, private userTaskService: UserTaskService, private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef) {
@@ -33,19 +44,25 @@ export class TaskGroupComponent implements OnInit {
   }
 
   getUserTasks() {
+    this.isLoadingTasks = true;
     this.userTaskService.getAll().subscribe(result => {
       this.userTasks = result;
+      this.isLoadingTasks = false;
       this.changeDetector.detectChanges();
     }, error => {
+      this.isLoadingTasks = false;
       this.error = 'Unable to load tasks.';
     });
   }
 
   getTaskGroups(): void {
+    this.isLoading = true;
     this.taskGroupService.getAll().subscribe(result => {
       this.taskGroups = result;
+      this.isLoading = false;
       this.changeDetector.detectChanges();
     }, error => {
+      this.isLoading = false;
       this.error = 'Unable to load task groups.';
     });
   }

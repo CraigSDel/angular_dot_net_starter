@@ -1,0 +1,10 @@
+.home-header { margin-bottom: 2rem; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.dashboard-link { color: inherit; text-decoration: none; }
+.dashboard-card { height: 100%; padding: 1.25rem; border-top: 4px solid var(--portal-primary); transition: transform 160ms ease, box-shadow 160ms ease; }
+.dashboard-link:hover .dashboard-card, .dashboard-link:focus-visible .dashboard-card { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(105, 35, 58, .16); }
+.dashboard-icon { display: block; width: auto; height: auto; margin-bottom: 1rem; color: var(--portal-primary); font-size: 2.25rem; }
+.dashboard-card p { color: var(--portal-muted); line-height: 1.55; }
+.card-action { display: inline-flex; align-items: center; gap: .35rem; color: var(--portal-primary-dark); font-weight: 700; }
+.card-action mat-icon { font-size: 1.1rem; }
+@media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }

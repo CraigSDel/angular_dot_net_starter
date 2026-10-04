@@ -1,44 +1,13 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-        <button class="button float-right" type="submit" (click)="orderByName()">Order By Name</button>
-        <button class="button float-right" type="submit" (click)="orderByTaskCount()">Order By Task Count</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <h1 id="tableLabel">Task Groups</h1>
-
-      <p *ngIf="!taskGroups"><em>Loading...</em></p>
-
-      <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="taskGroups">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>User Tasks</th>
-            <th>User Task Count</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let taskGroup of taskGroups">
-            <td>{{ taskGroup.taskGroupId }}</td>
-            <td>{{ taskGroup.name }}</td>
-            <td>
-              <p *ngFor="let userTask of taskGroup.userTasks">
-                {{ userTask.name }}
-              </p>
-            </td>
-            <td>
-                {{ taskGroup.userTasks.length }}
-            </td>
-            <td>
-              <button class="button float-right" type="button" (click)="edit()">Edit</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<section class="page-header home-header">
+  <div><p class="eyebrow">Workspace overview</p><h1>User Task Management</h1><p class="page-intro">Organize users, track work, and group related tasks in one place.</p></div>
+</section>
+<section class="dashboard-grid" aria-label="Management areas">
+  <a class="dashboard-link" *ngFor="let item of items" [routerLink]="item.route">
+    <mat-card class="dashboard-card">
+      <mat-icon class="dashboard-icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+      <mat-card-header><mat-card-title>{{ item.title }}</mat-card-title></mat-card-header>
+      <mat-card-content><p>{{ item.description }}</p></mat-card-content>
+      <mat-card-actions><span class="card-action">Open {{ item.title }} <mat-icon aria-hidden="true">arrow_forward</mat-icon></span></mat-card-actions>
+    </mat-card>
+  </a>
+</section>

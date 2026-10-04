@@ -1,21 +1,43 @@
-import { Component } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-menu',
-  imports: [NgClass, RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule],
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit, OnDestroy {
+  @ViewChild('sidenav') sidenav!: MatSidenav;
   isExpanded = false;
+  isMobile = false;
+  private breakpointSubscription?: Subscription;
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
+
+  ngOnInit(): void {
+    this.breakpointSubscription = this.breakpointObserver.observe('(max-width: 767px)').subscribe(state => {
+      this.isMobile = state.matches;
+      this.isExpanded = !this.isMobile;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.breakpointSubscription?.unsubscribe();
+  }
 
   collapse() {
-    this.isExpanded = false;
+    if (this.isMobile) this.sidenav?.close();
   }
 
   toggle() {
-    this.isExpanded = !this.isExpanded;
+    this.sidenav?.toggle();
   }
 }

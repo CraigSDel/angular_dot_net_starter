@@ -5,11 +5,30 @@ User Task Management is a single-page application for organizing users, tracking
 ## Features
 
 - Dashboard with links to the main management areas.
+- Angular Material interface with a custom rose-and-red theme, responsive sidenav navigation, accessible focus states, and mobile layouts.
 - User management with create, edit, list, and delete workflows.
 - Task management with owners, deadlines, statuses, and optional task groups.
 - Task-group management with name and task membership editing.
 - Versioned REST API under `/api/v1`.
 - Health endpoint at `/health` for deployment and CI readiness checks.
+
+## Screenshots
+
+### Dashboard
+
+![User Task Management dashboard](docs/screenshots/dashboard.png)
+
+### Users
+
+![User management](docs/screenshots/users.png)
+
+### Tasks
+
+![Task management](docs/screenshots/tasks.png)
+
+### Task groups
+
+![Task-group management](docs/screenshots/task-groups.png)
 
 ## Architecture
 
@@ -22,6 +41,10 @@ Entity Framework Core 10
         │
 SQLite (blog.db by default)
 ```
+
+The Angular client uses standalone Angular components and Angular Material for
+navigation, cards, tables, forms, selects, icons, loading states, and error
+states. Bootstrap is not used by the client.
 
 The explicit relationship is `UserTask.UserId` → `User` and optional `UserTask.TaskGroupId` → `TaskGroup`. Users cannot be deleted while tasks reference them; task groups cannot be deleted while they contain tasks.
 
@@ -121,6 +144,10 @@ The application is then available at `http://127.0.0.1:5000`.
 
 ## Development notes
 
+- Frontend styling is defined in `ClientApp/src/styles.scss`; the Material theme
+  uses rose as its primary palette and red as its tertiary palette.
+- The client keeps CRUD forms inline and uses Material tables and form controls;
+  no dialog-based editing workflow is required.
 - The API redesign intentionally removes the legacy `/User`, `/UserTask`, and `/TaskGroup` routes.
 - SQLite is the default development and test database; use a separately managed database for production deployments.
 - The application currently has no authentication or authorization layer.
